@@ -1,71 +1,32 @@
 
 
 /*
-var  firstName = "John";
-var lastName = 'Smith';
-var age = 28;
-var fullAge = true;
+ 
+  var markMass = 95
+var markHeight = 2.01
 
-var job;
+var johnMass = 50
+var johnHeight = 1.4
 
-//type coercion
+var markBMI = markMass / (markHeight * markHeight);
+var johnBMI = johnMass / (johnHeight * johnHeight);
 
-console.log(firstName + " " + age);
+var fatness = markBMI > johnBMI
 
-var job, isMarried;
-job = 'teacher';
-isMarried = true;
+console.log("Is Mark fatter than John? " + fatness);
+ 
+ */
 
-console.log(firstName + " " + "is a " + job + ". Is he married? "+ isMarried);
+ var john = {name:"John", height:2.1, weight: 95,};
+ var mark = {name:"Mark", height:1.4, weight:50,}
 
-// variable mutation //
+ var bmi = function(name){
+     var result = name.weight / (name.height * name.height);
+     return result;
+ }
 
-age = "twenty-eight";
-job = 'driver';
-alert(firstName + " " + "is a " + job + ". Is he married? "+ isMarried);
+ var fattestFuck = function(a,b){
+     console.log(`is ${a.name} fatter than ${b.name}? It's ${bmi(a) > bmi(b)}!`);
+ }
 
-var lastName = prompt("Last name?");
-
-console.log(firstName + " " + lastName);
-
-// Logical operators
-var now = 2018;
-var ageJohn = 28;
-var ageMark = 33;
-var fullAge = 18
-
-
-
-
-// So johnOlder just contains the Boolean value of running this operation.
-var johnOlder = ageJohn > ageMark;
-
-console.log(johnOlder);
-
-
-console.log(typeof ageJohn);
-
-*/
-
-
-
-var now = 2018
-var yearJohn = 1989;
-var fullAge = 18;
-
-var isFullAge = now - yearJohn >= 18;
-
-console.log(isFullAge);
-
-// Multiple Assignments
-
-var x; y;
-
-// This works because not all operations are left to right.  For instance,
-// assigment (a = b) happens right-to-left.
-x = y = 2+3+4;
-
-// this format just produces an error:  4+6+6 = a = b;
-
-
-console.log(x,y);
+ fattestFuck(john, mark);
