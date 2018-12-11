@@ -67,9 +67,6 @@ age >=18 ? console.log(firstName + " drinks beer")
 
 var drink = age >= 18 ? console.log('beer') : console.log('juice');
 
-*/
-
-  
 // Switch statement
 
 const first = 'Tom';
@@ -91,14 +88,10 @@ switch (job) {
     }
 
 
-
-
-
-
 var firstName = 'John';
 var age = 16;    
 
-switch(true){
+switch(true){  // note that we have the contitional set to true, not the variable.
     case(age < 13) :
         console.log(`${firstName} is a boy`);
         break;
@@ -112,3 +105,53 @@ switch(true){
     console.log(`${firstName} is a man`);
 }
 
+  //// 2.17 ////////
+
+// falsy values: undefines, null, 0, "", NaN - these values are treated as FALSE
+// truthy values: all NOT falsy values. - Treated as true.
+
+var height = "23";
+
+if(height || height === 0){console.log("success!");
+}
+else {console.log("variable not defined.");
+}
+
+// Equal vs. strict equal
+// == does type coercion.  It will try to turn things into the value
+// type of the thing is being compared to.  === DOES NOT do type coercion.
+
+if(height === 23){console.log("almost 23");
+}
+
+
+//// 2.18 ////////
+// CODING CHALLENGE //
+
+var johnScore = (89 + 120 + 103);
+var mikeScore = (116 + 94 + 105);
+var maryScore = (97 + 102 + 105);
+
+var johnAvg = johnScore / 3;
+var mikeAvg = mikeScore / 3;
+var maryAvg = maryScore / 3;
+
+switch(true){
+    case(johnAvg > mikeAvg && johnAvg > maryAvg):
+        console.log("John wins with a score of " + johnAvg);
+    break;
+
+    case(mikeAvg > johnAvg && mikeAvg > maryAvg):
+        console.log("Mike wins with a score of " + mikeAvg);
+    break;
+
+    case(maryAvg > mikeAvg && maryAvg > johnAvg):
+        console.log("Mary wins with a score of " + johnAvg);
+    break;
+    
+    default: 
+        console.log("There was a tie!  Everyone loses!");
+    
+}
+
+*/
