@@ -213,5 +213,67 @@ console.log(whatYouDo('designer', 'Mike'));
 // Statements may do something, like console.log or setting a 
 // variable, but they do not return a result.
 
+//// 2.22 Arrays /////////
+
+var names = ['john','mark', 'jane'];
+var years = [1990, 1969, 1948];
+
+
+// mutate array data
+// Arrays do not work with curly braces.
+
+names[1] = 'ben';
+
+
+console.log(names.length);
+
+names[5] = "mary";
+
+console.log(names[5]);
+console.log(names[4]);
+console.log(names.length);
+
+******
+
+var john = ['John', 'Smith', 1990, 'teacher', false];
+
+john.push('blue');  // push adds to the end
+
+john.unshift('Mr.');  // unshift adds to beginning
+
+console.log(john);  
+
+john.pop();  // removes the last element
+john.shift();   // removes the first element
+
+console.log(john.indexOf("23"));  // gets the position of the parameter
+console.log(john);
+
+var isDesigner = john.indexOf('teacher') === -1 ? 
+'John is not a desiger' : 'John is a designer';
+
+console.log(isDesigner);
+
 */
+
+var billList = [124, 48, 268];
+
+
+
+var tipCalculator = function(bills){
+    var justTheTip = [];
+    var totalCosts = [];
+    
+    if (bills.length === -1){
+        return justTheTip, totalCosts;
+    } else {
+        var tip = bills[0] * 0.2;
+        justTheTip.push(tip);
+        totalCosts.push(bills[0] + tip);
+        bills.pop(bills[0]);
+    }
+    return justTheTip, totalCosts;
+};
+
+console.log(tipCalculator(billList));
 
