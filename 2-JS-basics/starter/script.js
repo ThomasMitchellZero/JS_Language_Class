@@ -154,4 +154,64 @@ switch(true){
     
 }
 
+//// 2.20 Functions ////////
+
+function calculateAge(birthyear){
+    return 2018 - birthyear;
+}
+
+var ageJohn = calculateAge(1983);
+console.log(ageJohn);
+
+function yearsUntilRetirement(year, firstName){
+    var age = calculateAge(year);
+    var timer = 65 - age;
+    if(timer > 0){
+        console.log(`${firstName} has ${timer} years left until retirement`);
+    } else {
+        console.log(`${firstName} is already retired!`);
+    }
+    
+}
+
+yearsUntilRetirement(1903, "Tom");
+
+//// 2.21 Function Expressions and Function Declarations ////////
+
+//Function Declaration
+//function whatYouDo(job, name){};
+
+// Function Expression
+var whatYouDo = function(job, name){
+    switch(job){
+        case "teacher":
+            
+        // No break statement is necessary.  The return keyword 
+        //returns the value and also immediately ends the function.
+            return name + " teaches kids";
+        
+        case "driver":
+            return name + " drives the kids";
+        
+        case "designer":
+            return name + " is a poorly-paid genius";
+
+        default :
+            return "How should I know?";
+
+    }
+
+};
+
+console.log(whatYouDo('designer', 'Mike'));
+
+// Function xpressions return a value as their result. They do not
+// have to have the function(x){} format.  a > b is an expression,
+// because it returns a boolean
+
+
+// Statements may do something, like console.log or setting a 
+// variable, but they do not return a result.
+
 */
+
