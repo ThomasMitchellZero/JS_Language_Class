@@ -254,26 +254,103 @@ var isDesigner = john.indexOf('teacher') === -1 ?
 
 console.log(isDesigner);
 
-*/
 
+//// 2.25 Arrays coding challenge ////////
 var billList = [124, 48, 268];
 
-
+var justTheTip = [];
+var totalCosts = [];
 
 var tipCalculator = function(bills){
-    var justTheTip = [];
-    var totalCosts = [];
     
-    if (bills.length === -1){
-        return justTheTip, totalCosts;
-    } else {
-        var tip = bills[0] * 0.2;
-        justTheTip.push(tip);
-        totalCosts.push(bills[0] + tip);
-        bills.pop(bills[0]);
+
+    // function to calculate the tip
+    var tipify = function(cost){
+        switch(true){
+            case cost < 50:
+                return cost * 0.2;
+            case cost >= 50 && cost < 200:
+                return cost * 0.15;
+            default:
+                return cost * 0.1;
+        }
     }
-    return justTheTip, totalCosts;
+
+    justTheTip.push(tipify(bills))
+    totalCosts.push(bills + tipify(bills))
+}
+
+tipCalculator(124);
+tipCalculator(48);
+tipCalculator(268);
+
+console.log(justTheTip, totalCosts);
+
+//// 2.25 Objects ////////
+
+var john = {
+    firstName:'John',
+    lastName:'Smith',
+    birthYear: 1990,
+    family: ['Jane', 'Mark', 'Bob', 'Emily'],
+    job: 'teacher',
+    isMarried: false,
 };
 
-console.log(tipCalculator(billList));
+console.log(john);
+console.log(john.firstName);
+var x = 'birthYear';
+console.log(john[x]);
 
+john.job = 'designer';
+console.log(john.job);
+
+
+//// 2.26 Methods ////////
+
+var john = {
+    firstName:'John',
+    lastName:'Smith',
+    birthYear: 1990,
+    family: ['Jane', 'Mark', 'Bob', 'Emily'],
+    job: 'teacher',
+    isMarried: false,
+    calcAge: function(){
+        this.age = 2018 - this.birthYear;
+    }
+
+};
+
+john.calcAge()
+console.log(john.calcAge());
+
+
+//// 2.27 Coding Challenge - Objects and Methods ////////
+
+var mark = {name: "Mark", height: 2.1, weight: 95,}
+var john = {name: "John", height: 2.1, weight: 95,}
+
+var bmi = function(person){
+    return person.weight / (person.height * person.height)
+}
+
+var fattestPerson =function(persA, persB){
+    switch(true){
+        case bmi(persA) > bmi(persB):
+            return(`${persA.name} is fatter!`);
+
+        case bmi(persA) < bmi(persB):
+            return(`${persB.name} is fatter!`);
+            
+        default:
+            return("They're both fat.");
+    }
+};
+
+console.log(fattestPerson(mark,john));
+
+*/
+
+for (var i = 0; i < 10; i++){
+    console.log(i)
+}
