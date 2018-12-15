@@ -349,8 +349,90 @@ var fattestPerson =function(persA, persB){
 
 console.log(fattestPerson(mark,john));
 
+
+
+
+//// 2.29 For and While loops /////////
+
+for (var i = 1; i <= 20; i++){
+    console.log(i);
+}
+
+var john = ['John', 'Smith', 1990, 'teacher', false];
+// For Loop
+for (var i = 0; i < john.length; i ++){
+    console.log(john[i]);
+}
+
+//While Loop
+var i = 0
+while (i < john.length){
+    console.log(john[i]);
+    i++;
+}
+
+
+// Continue quits the current iteration of the loop but lets the loop continue
+
+var john = ['John', 'Smith', 1990, 'teacher', false];
+
+
+for (var i = (john.length - 1); i >=0; i--){
+    if(typeof john[i] !== 'string'){continue;}
+    console.log(john[i]);
+}
+
+// Break stops the loop entirely
+
+for (var i = 0; i < john.length; i ++){
+    if(typeof john[i] !== 'string'){break;}
+    console.log(john[i]);
+}
+
 */
 
-for (var i = 0; i < 10; i++){
-    console.log(i)
+
+
+var bills = { 
+    billVals: [124,48,268, 280, 42],
+    allTips: [],
+    totalCosts: [],
+    tipCalc: function(cost){
+        switch(true){
+            case cost < 50:
+                return cost * 0.2;
+            case cost >= 50 && cost < 200:
+                return cost * 0.15;
+            default:
+                return cost * 0.1;
+
+        }
+    },
+
+
+    billCalc: function(){
+        for(i = 0; i < this.billVals.length; i++){
+            
+            unitCost = this.billVals[i]
+
+
+            this.allTips.push(this.tipCalc(unitCost));
+            this.totalCosts.push(unitCost + this.tipCalc(unitCost));
+            
+        }
+    }
+  }
+
+bills.billCalc();
+console.log(bills.allTips, bills.totalCosts);
+
+var tipAvg = function(tipList){
+    var result = 0;
+    for(i = 0; i < tipList.length; i++ ){
+        result += tipList[i];
+    }
+    return result/tipList.length;
 }
+
+console.log(tipAvg(bills.billVals));
+
