@@ -14,25 +14,8 @@ var scores, roundScore, activePlayer, dice;
 
 scores = [0,0];
 roundScore = 0;
-activePlayer = 1;
-dice = Math.floor(Math.random() * 6) +1;
+activePlayer = 0;
 
-console.log(dice);
-
-/*The document object refers to the DOM that is generated from the HTML.
-The .querySelector method allows us to specify an HTML element (in this case,
-we're getting the id of #score-0) and we're adding the result of activePlayer
-because all player-specific elements have the same names, except for the number.
-
-
-the .textContent method allows me to
-change what is inside the tags.  
-*/
-
-document.querySelector('#current-' + activePlayer).textContent = dice;
-
-var x = document.querySelector('#score-0').textContent;
-console.log(x);
 
 /* Goal of this is to make the dice invisible.  Use document.querySelector(
 .dice) because the die only has a class, no id.  Then .style says we are going
@@ -44,3 +27,48 @@ the property has to be a string.
 */
 
 document.querySelector('.dice').style.display = "none";
+
+
+// set all scores to zero when the page loads
+document.getElementById("score-0").textContent = 0;
+document.getElementById("score-1").textContent = 0;
+document.getElementById("current-0").textContent = 0;
+document.getElementById("current-0").textContent = 0;
+
+document.querySelector('.btn-roll').addEventListener("click", function(){
+    // 1. generate a random number
+    dice = Math.floor(Math.random() * 6) +1;
+    
+
+    // 2. Display that number on the dice
+    var diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = "block";
+    
+    // This is slick.  Because all the image names have a standard convention,
+    // we just concatenate whatever the roll was to the "dice-" string and it
+    // changes the source to the correct .png
+
+    diceDOM.src = "dice-" + dice +".png";
+
+    // 3. Update the round score if the rolled number was not 1
+    
+    
+    if(dice !== 1){
+
+        //use the activePlayer to point the querySelector to the correct box
+        roundScore += dice;
+        document.querySelector('#current-'+activePlayer).textContent = roundScore;
+
+    } else {
+        // if a 1 is rolled, toggle the activePlayer
+        roundScore = 0;
+        // ternary operator
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+        scores[activePlayer] += roundScore
+
+        document.getElementById('current-0').textContent = 0;
+        document.getElementById('current-1').textContent = 0;
+    }
+    
+
+});
