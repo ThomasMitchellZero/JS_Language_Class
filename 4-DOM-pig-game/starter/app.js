@@ -12,7 +12,8 @@ GAME RULES:
 
 var scores, roundScore, activePlayer, dice, playerSwap, initFunction, gamePlaying;
 var lastRoll = 0;
-gamePlaying = false
+gamePlaying = false;
+
 
 initFunction = function(){
     gamePlaying = true;
@@ -37,7 +38,6 @@ initFunction = function(){
     document.querySelector(".player-1-panel").classList.remove("active");
     document.querySelector(".player-0-panel").classList.add("active");
 }
-
 
 // Playerswap does all operations necessary to switch players
 playerSwap = function(){
@@ -67,8 +67,6 @@ playerSwap = function(){
 //  document.querySelector(".player-0-panel").classList.toggle("active");
 //  document.querySelector(".player-1-panel").classList.toggle("active");    
 }
-
-
 
 initFunction();
 
@@ -121,8 +119,16 @@ document.querySelector(".btn-hold").addEventListener("click", function(){
     // Update the displayed score to show the value of newScore
     document.getElementById("score-"+ activePlayer)
     .textContent = scores[activePlayer];
+    
+    // get the value, if any, from the user's input
+    var input = document.querySelector(".final-score").value;
+    var winningScore;
 
-    if (scores[activePlayer] >= 20) {
+
+    // if user hasn't entered an input, default winning score is 100
+    input? winningScore = input : winningScore = 100;
+
+    if (scores[activePlayer] >= winningScore) {
         gamePlaying = false;
         document.querySelector('.dice').style.display = "none";
         document.getElementById("name-"+activePlayer).textContent = "WINNER!";
