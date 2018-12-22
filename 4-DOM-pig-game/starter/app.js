@@ -10,12 +10,34 @@ GAME RULES:
 */
 
 
-var scores, roundScore, activePlayer, dice, playerSwap, diceDom, zeroOut;
+var scores, roundScore, activePlayer, dice, playerSwap, initFunction, gamePlaying;
 
-scores = [0,0];
-roundScore = 0;
-activePlayer = 0;
-diceDOM = document.querySelector('.dice');
+gamePlaying = false
+
+initFunction = function(){
+    gamePlaying = true;
+    scores = [0,0];
+    roundScore = 0;
+    activePlayer = 0;
+
+    document.querySelector('.dice').style.display = "none";
+
+    // set all scores to zero when the page loads
+    document.getElementById("score-0").textContent = 0;
+    document.getElementById("score-1").textContent = 0;
+    document.getElementById("current-0").textContent = 0;
+    document.getElementById("current-0").textContent = 0;
+
+    document.getElementById("name-0").textContent = "Player 1";
+    document.getElementById("name-1").textContent = "Player 2";
+
+    document.querySelector(".player-0-panel").classList.remove("winner");
+    document.querySelector(".player-1-panel").classList.remove("winner");
+    document.querySelector(".player-0-panel").classList.remove("active");
+    document.querySelector(".player-1-panel").classList.remove("active");
+    document.querySelector(".player-0-panel").classList.add("active");
+}
+
 
 // Playerswap does all operations necessary to switch players
 playerSwap = function(){
@@ -36,7 +58,7 @@ playerSwap = function(){
     document.getElementById('current-1').textContent = 0;
 
     // hides the dice again.
-    diceDOM.style.display = "none";
+    document.querySelector('.dice').style.display = "none";
 
 //  This is how the instructor did the active player toggling.
 //  document.querySelector(".player-0-panel").classList.toggle("active");
@@ -45,56 +67,46 @@ playerSwap = function(){
 
 
 
-/* Goal of this is to make the dice invisible.  Use document.querySelector(
-.dice) because the die only has a class, no id.  Then .style says we are going
-to change the CSS, the next element (.display) tells us which property we are
-going to change, and then what follows the = sign is what we are setting that
-property to - in this case, 'none' because we want it hidden.  remember that
-the property has to be a string.
-
-*/
-
-document.querySelector('.dice').style.display = "none";
+initFunction();
 
 
-// set all scores to zero when the page loads
-document.getElementById("score-0").textContent = 0;
-document.getElementById("score-1").textContent = 0;
-document.getElementById("current-0").textContent = 0;
-document.getElementById("current-0").textContent = 0;
 
 
 // What do to when someone clicks the Roll Dice button.
 document.querySelector('.btn-roll').addEventListener("click", function(){
+    if(gamePlaying){
+        // 1. generate a random number
+        var dice = Math.floor(Math.random() * 6) +1;
+        
+        // 2. Display that number on the dice
+        document.querySelector('.dice').style.display = "block";
+        
+        // This is slick.  Because all the image names have a standard convention,
+        // we just concatenate whatever the roll was to the "dice-" string and it
+        // changes the source to the correct .png
+
+        document.querySelector('.dice').src = "dice-" + dice +".png";
+
+
+        // 3. Update the round score if the rolled number was not 1
+        
+        if(dice !== 1){
+
+            //Concatenate activePlayer to point the querySelector to the correct box
+            roundScore += dice;
+            document.querySelector('#current-'+activePlayer).textContent = roundScore;
+
+        } else {playerSwap()}
+    }
     
-    // 1. generate a random number
-    var dice = Math.floor(Math.random() * 6) +1;
-    
-    // 2. Display that number on the dice
-    diceDOM.style.display = "block";
-    
-    // This is slick.  Because all the image names have a standard convention,
-    // we just concatenate whatever the roll was to the "dice-" string and it
-    // changes the source to the correct .png
-
-    diceDOM.src = "dice-" + dice +".png";
-
-
-    // 3. Update the round score if the rolled number was not 1
-    
-    if(dice !== 1){
-
-        //Concatenate activePlayer to point the querySelector to the correct box
-        roundScore += dice;
-        document.querySelector('#current-'+activePlayer).textContent = roundScore;
-
-    } else {playerSwap()}
 
 });
 
 
 document.querySelector(".btn-hold").addEventListener("click", function(){
-    // add the round score to the current active player's score
+    
+    if (gamePlaying){
+     // add the round score to the current active player's score
     scores[activePlayer] += roundScore;
 
     // Update the displayed score to show the value of newScore
@@ -102,6 +114,7 @@ document.querySelector(".btn-hold").addEventListener("click", function(){
     .textContent = scores[activePlayer];
 
     if (scores[activePlayer] >= 20) {
+        gamePlaying = false;
         document.querySelector('.dice').style.display = "none";
         document.getElementById("name-"+activePlayer).textContent = "WINNER!";
         document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
@@ -113,4 +126,10 @@ document.querySelector(".btn-hold").addEventListener("click", function(){
 
     }
 
+
+    }
+
+
 });
+
+document.querySelector(".btn-new").addEventListener("click", initFunction);
