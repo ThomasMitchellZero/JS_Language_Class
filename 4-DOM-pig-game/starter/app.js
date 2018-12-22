@@ -10,11 +10,39 @@ GAME RULES:
 */
 
 
-var scores, roundScore, activePlayer, dice;
+var scores, roundScore, activePlayer, dice, playerSwap, diceDom, zeroOut;
 
 scores = [0,0];
 roundScore = 0;
 activePlayer = 0;
+diceDOM = document.querySelector('.dice');
+
+// Playerswap does all operations necessary to switch players
+playerSwap = function(){
+
+    // All the current round's points are lost.
+    roundScore = 0;
+    // remove class "active" from current active player
+    document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
+
+    // Toggle which player is active
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+    // add the "active" class to the new active player's panel
+    document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
+
+     // The elements that display round scores are also set to zero.
+    document.getElementById('current-0').textContent = 0;
+    document.getElementById('current-1').textContent = 0;
+
+    // hides the dice again.
+    diceDOM.style.display = "none";
+
+//  This is how the instructor did the active player toggling.
+//  document.querySelector(".player-0-panel").classList.toggle("active");
+//  document.querySelector(".player-1-panel").classList.toggle("active");    
+}
+
 
 
 /* Goal of this is to make the dice invisible.  Use document.querySelector(
@@ -39,9 +67,6 @@ document.getElementById("current-0").textContent = 0;
 // What do to when someone clicks the Roll Dice button.
 document.querySelector('.btn-roll').addEventListener("click", function(){
     
-
-    var diceDOM = document.querySelector('.dice');
-
     // 1. generate a random number
     var dice = Math.floor(Math.random() * 6) +1;
     
@@ -63,34 +88,29 @@ document.querySelector('.btn-roll').addEventListener("click", function(){
         roundScore += dice;
         document.querySelector('#current-'+activePlayer).textContent = roundScore;
 
-    } else {
-
-        // All the current round's points are lost.
-        roundScore = 0;
-
-        // remove class "active" from current active player
-        document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
-
-        // Toggle which player is active
-        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-
-        // add the "active" class to the new active player's panel
-        document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
-
-
-        // The elements that display round scores are also set to zero.
-        document.getElementById('current-0').textContent = 0;
-        document.getElementById('current-1').textContent = 0;
-
-        // hides the dice again.
-        diceDOM.style.display = "none";
-
-//      This is how the instructor did the active player toggling.
-//      document.querySelector(".player-0-panel").classList.toggle("active");
-//      document.querySelector(".player-1-panel").classList.toggle("active");
-    }
-    
+    } else {playerSwap()}
 
 });
 
 
+document.querySelector(".btn-hold").addEventListener("click", function(){
+    // add the round score to the current active player's score
+    scores[activePlayer] += roundScore;
+
+    // Update the displayed score to show the value of newScore
+    document.getElementById("score-"+ activePlayer)
+    .textContent = scores[activePlayer];
+
+    if (scores[activePlayer] >= 20) {
+        document.querySelector('.dice').style.display = "none";
+        document.getElementById("name-"+activePlayer).textContent = "WINNER!";
+        document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
+        document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
+    } else {
+
+    // switch the player
+    playerSwap();
+
+    }
+
+});
