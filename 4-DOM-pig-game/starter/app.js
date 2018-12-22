@@ -11,7 +11,7 @@ GAME RULES:
 
 
 var scores, roundScore, activePlayer, dice, playerSwap, initFunction, gamePlaying;
-
+var lastRoll = 0;
 gamePlaying = false
 
 initFunction = function(){
@@ -42,6 +42,9 @@ initFunction = function(){
 // Playerswap does all operations necessary to switch players
 playerSwap = function(){
 
+
+    // resets lastRoll because you only lose if YOU roll consecutive sixes.
+    lastRoll = 0;
     // All the current round's points are lost.
     roundScore = 0;
     // remove class "active" from current active player
@@ -58,7 +61,7 @@ playerSwap = function(){
     document.getElementById('current-1').textContent = 0;
 
     // hides the dice again.
-    document.querySelector('.dice').style.display = "none";
+    //document.querySelector('.dice').style.display = "none";
 
 //  This is how the instructor did the active player toggling.
 //  document.querySelector(".player-0-panel").classList.toggle("active");
@@ -77,6 +80,7 @@ document.querySelector('.btn-roll').addEventListener("click", function(){
     if(gamePlaying){
         // 1. generate a random number
         var dice = Math.floor(Math.random() * 6) +1;
+
         
         // 2. Display that number on the dice
         document.querySelector('.dice').style.display = "block";
@@ -87,16 +91,21 @@ document.querySelector('.btn-roll').addEventListener("click", function(){
 
         document.querySelector('.dice').src = "dice-" + dice +".png";
 
-
-        // 3. Update the round score if the rolled number was not 1
         
-        if(dice !== 1){
+        if(dice === 6 && lastRoll === 6){
+            // Lose your whole score if you roll consecutive 6s.
+            scores[activePlayer] = 0;
+            document.getElementById("score-"+ activePlayer).textContent = scores[activePlayer];
+            playerSwap();
 
-            //Concatenate activePlayer to point the querySelector to the correct box
+        } else if (dice !== 1){
+            // add player's current score.   
             roundScore += dice;
             document.querySelector('#current-'+activePlayer).textContent = roundScore;
 
         } else {playerSwap()}
+        
+        lastRoll = dice;
     }
     
 
