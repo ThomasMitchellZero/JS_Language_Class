@@ -21,7 +21,8 @@ initFunction = function(){
     roundScore = 0;
     activePlayer = 0;
 
-    document.querySelector('.dice').style.display = "none";
+    document.querySelector('#dice-0').style.display = "none";
+    document.querySelector('#dice-1').style.display = "none";
 
     // set all scores to zero when the page loads
     document.getElementById("score-0").textContent = 0;
@@ -76,29 +77,36 @@ initFunction();
 // What do to when someone clicks the Roll Dice button.
 document.querySelector('.btn-roll').addEventListener("click", function(){
     if(gamePlaying){
+
         // 1. generate a random number
-        var dice = Math.floor(Math.random() * 6) +1;
+        
+        
+        // Roll twice
+        var dice0 = Math.floor(Math.random() * 6) +1
+        var dice1 = Math.floor(Math.random() * 6) +1
 
         
         // 2. Display that number on the dice
-        document.querySelector('.dice').style.display = "block";
-        
+        document.getElementById('dice-0').style.display = "block";
+        document.getElementById('dice-1').style.display = "block";
+
         // This is slick.  Because all the image names have a standard convention,
         // we just concatenate whatever the roll was to the "dice-" string and it
         // changes the source to the correct .png
 
-        document.querySelector('.dice').src = "dice-" + dice +".png";
+        document.querySelector('#dice-0').src = "dice-" + dice0 +".png";
+        document.querySelector('#dice-1').src = "dice-" + dice1 +".png";
 
         
-        if(dice === 6 && lastRoll === 6){
+        if(dice0 === 6 && dice1 === 6){
             // Lose your whole score if you roll consecutive 6s.
             scores[activePlayer] = 0;
             document.getElementById("score-"+ activePlayer).textContent = scores[activePlayer];
             playerSwap();
 
-        } else if (dice !== 1){
+        } else if (dice0 !== 1 && dice1 !== 1){
             // add player's current score.   
-            roundScore += dice;
+            roundScore += dice0 + dice1;
             document.querySelector('#current-'+activePlayer).textContent = roundScore;
 
         } else {playerSwap()}
@@ -130,7 +138,8 @@ document.querySelector(".btn-hold").addEventListener("click", function(){
 
     if (scores[activePlayer] >= winningScore) {
         gamePlaying = false;
-        document.querySelector('.dice').style.display = "none";
+        document.querySelector('#dice-0').style.display = "none";
+        document.querySelector('#dice-1').style.display = "none";
         document.getElementById("name-"+activePlayer).textContent = "WINNER!";
         document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
         document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
