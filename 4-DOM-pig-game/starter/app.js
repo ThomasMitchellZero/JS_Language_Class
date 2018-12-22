@@ -35,13 +35,17 @@ document.getElementById("score-1").textContent = 0;
 document.getElementById("current-0").textContent = 0;
 document.getElementById("current-0").textContent = 0;
 
+
+// What do to when someone clicks the Roll Dice button.
 document.querySelector('.btn-roll').addEventListener("click", function(){
-    // 1. generate a random number
-    dice = Math.floor(Math.random() * 6) +1;
     
 
-    // 2. Display that number on the dice
     var diceDOM = document.querySelector('.dice');
+
+    // 1. generate a random number
+    var dice = Math.floor(Math.random() * 6) +1;
+    
+    // 2. Display that number on the dice
     diceDOM.style.display = "block";
     
     // This is slick.  Because all the image names have a standard convention,
@@ -50,25 +54,43 @@ document.querySelector('.btn-roll').addEventListener("click", function(){
 
     diceDOM.src = "dice-" + dice +".png";
 
+
     // 3. Update the round score if the rolled number was not 1
-    
     
     if(dice !== 1){
 
-        //use the activePlayer to point the querySelector to the correct box
+        //Concatenate activePlayer to point the querySelector to the correct box
         roundScore += dice;
         document.querySelector('#current-'+activePlayer).textContent = roundScore;
 
     } else {
-        // if a 1 is rolled, toggle the activePlayer
-        roundScore = 0;
-        // ternary operator
-        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-        scores[activePlayer] += roundScore
 
+        // All the current round's points are lost.
+        roundScore = 0;
+
+        // remove class "active" from current active player
+        document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
+
+        // Toggle which player is active
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+        // add the "active" class to the new active player's panel
+        document.querySelector(".player-"+ activePlayer +"-panel").classList.toggle("active");
+
+
+        // The elements that display round scores are also set to zero.
         document.getElementById('current-0').textContent = 0;
         document.getElementById('current-1').textContent = 0;
+
+        // hides the dice again.
+        diceDOM.style.display = "none";
+
+//      This is how the instructor did the active player toggling.
+//      document.querySelector(".player-0-panel").classList.toggle("active");
+//      document.querySelector(".player-1-panel").classList.toggle("active");
     }
     
 
 });
+
+
