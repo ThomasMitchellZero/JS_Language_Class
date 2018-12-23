@@ -1,3 +1,5 @@
+
+/**
 // function constructor
 
 var john = {
@@ -34,3 +36,18 @@ mark.calculateAge();
 
 console.log(mark.species);
 console.log(mark);
+
+
+
+ */
+
+ ////  5.63  Object.create  ////////
+
+ var personProto = {
+     calculateAge: function(){
+         2016 - this.yearOfBirth;
+     }
+ };
+
+ var john = Object.create(personProto);
+
