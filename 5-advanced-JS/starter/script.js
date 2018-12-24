@@ -63,7 +63,7 @@ var jane = Object.create(personProto,{
 
 });
 
-*/
+
 
 //// Section 5.64 Primitives vs. objects
 
@@ -114,3 +114,43 @@ function change(a,b){
 change(age, obj);
 
 console.log(age, obj.city);
+
+*/
+
+//// Section 5.65 First Clas Functions ////////
+
+var years = [1903, 1986, 1990, 1998, 2002, 2007];
+
+// this is just a generic function that loops through an array and performs 
+// a function
+function arrayCalc(arr, fn) {
+    var arrResult = [];
+    for(var i = 0; i < arr.length; i++){
+        arrResult.push(fn(arr[i]));
+    }
+    return arrResult;
+}
+
+function calculateAge(el){
+    return 2018 - el;
+};
+
+function fullAge(age){
+    return age >= 21
+}
+
+function maxHeartRate(el){
+    if(el >= 18 && el <= 81){
+        return Math.round(206.9 - (0.67 * el));
+    } else {
+        return "Pick a better age!"
+    };
+};
+
+var ages = arrayCalc(years, calculateAge);
+
+var fullAges = arrayCalc(ages, fullAge);
+
+var heartRates = arrayCalc(ages, maxHeartRate);
+
+console.log(ages, fullAges, heartRates);
