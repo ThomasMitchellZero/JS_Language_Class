@@ -259,7 +259,49 @@ function interviewQuestion(job){
 }
 
 interviewQuestion('teacher')('Tom');
-*/
+
 
 
 //// 5. 69 Bind, Call, and Apply ////////
+
+var john = {
+    name: "John",
+    age: 35,
+    job: 'designer',
+    presentation: function(style, timeOfDay){
+
+        if(style === 'formal'){
+            console.log("Good " + timeOfDay + ", ladies and gentlemen! I'm "
+            + this.name + ", I'm a " + this.job + ", and I'm " + this.age);
+        } else {
+            console.log(timeOfDay + ", bitches!  I'm "
+            + this.name + ", I'm a " + this.job + ", and I'm " + this.age);
+        }
+    }
+}
+
+var emily = {
+    name: "Emily",
+    age: 32,
+    job: 'teacher',
+}
+
+john.presentation('', 'morning');
+
+// the first parameter of .call() lets you point the .this object at something
+// a different object.
+john.presentation.call(emily, 'friendly', 'afternoon');
+
+
+// like call, the first argument sets which object .this   applies to.
+// Subesquent arguments will be passed into the function IN ORDER as though
+// they were passed as arguments.  AFAICT any arguments that are passed
+// in the call will just be added to the end of the queue.
+
+var johnFriendly = john.presentation.bind(john, 'friendly');
+
+johnFriendly('morning');
+
+*/
+
+//// 5.70 Coding Challenge ////////
