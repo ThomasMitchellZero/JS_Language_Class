@@ -305,3 +305,48 @@ johnFriendly('morning');
 */
 
 //// 5.70 Coding Challenge ////////
+
+var questionList =[];
+
+var Question = function(question, answers, correctAnswer){
+    this.question = question;
+    this.answers = answers;
+    this.correctAnswer = correctAnswer;
+}
+Question.prototype.pushIt = function(){
+    questionList.push(this);
+}
+
+Question.prototype.showAnswerList = function(){
+
+    // Print the question
+    console.log(this.question);
+
+    // Print every possible answer option
+    for(i=0; i < this.answers.length; i++){
+        console.log(i + ": "+ this.answers[i]);
+    }
+    
+}
+
+var sky = new Question('Is the sky blue?', ['Aye', 'Nay','maybe'], 0)
+sky.pushIt();
+
+var water = new Question('Is water wet?', ['Yes', 'No', 
+    "Your mom's wet"], 0)
+water.pushIt();
+
+var bear = new Question('Does a bear shit in the woods?', ["Ja", "Nein", 
+    "Only until house-trained"], 2)
+bear.pushIt();
+
+var pope = new Question('The pope is...', ['Benedictine', 'Pauline', 
+    "Palpatine"], 2)
+pope.pushIt();
+
+
+// this function chooses a question at random and displays it.
+var questionSelector = (Math.floor(Math.random() * questionList.length));
+
+
+questionList[questionSelector].showAnswerList();
