@@ -189,6 +189,10 @@ teacherQuestion("Tom");
 // ('Mark')
 interviewQuestion('teacher')('Mark');
 
+
+//// 5.67 Instantly Invoked Function Expressions ////////
+
+
 var sillyGame = function(){
     var number = Math.floor(Math.random * 10) + 1
     if (number <= 5){
@@ -214,5 +218,48 @@ const luck = 2;
 // this is where we pass in the argument to this anonymous function.
 })(luck);
 
+//// 5.68 Closures ////////
+
+function retirement(retirementAge){
+    var a = ' years left until retirement';
+    return function (yearOfBirth){
+        var age = 2018 - yearOfBirth;
+        console.log((retirementAge - age) + a);
+    }
+}
+
+
+var retirementUS = retirement(67);
+var retirementGermany = retirement(65);
+var retirementIndia = retirement(80);
+
+retirementUS(1990);
+retirementGermany(1990);
+retirementIndia(1990);
+
+
+function interviewQuestion(job){
+    
+    return function(name){
+
+        var a = ", can you tell me about UX design?";
+        var b = ", what are your thoughts on corporal punishment?";
+        var c = ", what would you say...ya do here?";
+        
+        var IQfunc = function(respVar){console.log(name + respVar)}
+        
+        if(job === 'designer'){
+            IQfunc(a);
+        }else if(job === 'teacher'){
+            IQfunc(b);
+        } else {
+            IQfunc(c);
+        }
+    }
+}
+
+interviewQuestion('teacher')('Tom');
 */
 
+
+//// 5. 69 Bind, Call, and Apply ////////
