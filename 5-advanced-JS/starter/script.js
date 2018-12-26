@@ -115,7 +115,7 @@ change(age, obj);
 
 console.log(age, obj.city);
 
-*/
+
 
 //// Section 5.65 First Clas Functions ////////
 
@@ -154,3 +154,65 @@ var fullAges = arrayCalc(ages, fullAge);
 var heartRates = arrayCalc(ages, maxHeartRate);
 
 console.log(ages, fullAges, heartRates);
+
+
+
+//// 5.66 Functions Returning Functions ////////
+
+// this main function gets an input(job) and it returns a function, which
+// is allowed because functions are objects.
+function interviewQuestion(job){
+    switch(true){
+        case job === 'designer':
+            return function(name){
+                console.log(name +", does it suck to be poor?")
+            }
+        case job === 'teacher':
+            return function(name){
+                console.log(name + ", do you hit your students?")
+            }
+        default:
+            return function(name){
+                console.log(name + ", get a better job!")
+            }
+    }
+}
+
+// this just produces the appropriate function.  We have to store it 
+// in a variable because we have yet to call the function.
+
+var teacherQuestion = interviewQuestion('designer');
+teacherQuestion("Tom");
+
+// Looks strange, but this also works.  This returns the interview question
+// for 'teacher' and then immediately passes that function the argument of
+// ('Mark')
+interviewQuestion('teacher')('Mark');
+
+var sillyGame = function(){
+    var number = Math.floor(Math.random * 10) + 1
+    if (number <= 5){
+        console.log("You Lose!")
+    } else {
+        console.log('You Win!')
+    }
+
+}
+
+// the anonymous function needs to be in parentheses or else JS sees it
+// as a function declaration without a name (i.e. a syntax error).  Then
+// it's just a normal anonymous function.  The two parentheses outside the
+// function are what actually tell it to run.  
+
+const luck = 2;
+
+(function(luck){
+    var number = Math.random() * 10;
+    console.log(number);
+    console.log(number >= 5 - luck);
+
+// this is where we pass in the argument to this anonymous function.
+})(luck);
+
+*/
+
