@@ -306,13 +306,23 @@ johnFriendly('morning');
 
 //// 5.70 Coding Challenge ////////
 
-var questionList =[];
+// by wrapping the whole thing in an IIFE, it will now run in its own
+// execution context so anyone who runs this code doesn't have to worry
+// about it interfering with their variables.
+
+(function(){
+
+    var questionList =[];
 
 var Question = function(question, answers, correctAnswer){
     this.question = question;
     this.answers = answers;
     this.correctAnswer = correctAnswer;
 }
+
+//////// .prototype methods    /////////////////////////
+
+
 Question.prototype.pushIt = function(){
     questionList.push(this);
 }
@@ -326,8 +336,17 @@ Question.prototype.showAnswerList = function(){
     for(i=0; i < this.answers.length; i++){
         console.log(i + ": "+ this.answers[i]);
     }
-    
 }
+
+Question.prototype.checkResponse = function(){
+    if(this.correctAnswer == input){
+        console.log("Correct!")
+    } else {
+        console.log("You chose...poorly.");
+    }
+}
+
+//// Questions for the list //////////////////////////////////////////////
 
 var sky = new Question('Is the sky blue?', ['Aye', 'Nay','maybe'], 0)
 sky.pushIt();
@@ -345,8 +364,17 @@ var pope = new Question('The pope is...', ['Benedictine', 'Pauline',
 pope.pushIt();
 
 
+
+
 // this function chooses a question at random and displays it.
 var questionSelector = (Math.floor(Math.random() * questionList.length));
-
-
+    
+// uses the random number in questionSelector to pick a question.
 questionList[questionSelector].showAnswerList();
+
+//ask what their guess is.
+var input = prompt("Please enter the number of your guess","0");
+
+questionList[questionSelector].checkResponse();
+
+})()
