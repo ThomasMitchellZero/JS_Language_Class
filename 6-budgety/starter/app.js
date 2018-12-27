@@ -40,19 +40,33 @@ var budgetController = (function(){
     var add = function(a){
         return x + a;
     }
-    // the actual return of this function is an object.  It has one property: publicText, and its value is this function.  The result is basically - - - var budgetController = {publicTest: function(b){...} };
+
     return {
         publicTest: function(b){
-            console.log(add(b));
+            return(add(b));
         }
     }
-    // Once the function runs,  x  and  add  are generated and stored within the function, but not accessible from anywhere outside.  However, because of lexical scope, inner functions have access to the contents of outer functions, EVEN AFTER the outer function completes.
+
 })();
 
-// budgetController.add(5); will fail because add is a variable, not a property.  The error we get is  - TypeError: budgetController is not a function - which is true!  There is an anonymous function, but because parentheses (grouping) happens before assignment, the function is resolved and gone before anything gets assigned to the variable.  Instead, the function produces an object, and that object gets assigned to budgetController.  If we got rid of the first parenthesis in front of  (function(){} this would be a function, but it's not.  
 
-budgetController.publicTest = 111;
-console.log(budgetController.publicTest)
+var UIController = (function(){
+    // some code later
+})();
 
 
-budgetController.publicTest(5);
+// the reason we are accepting the other controllers as parameters and not just calling them inside is because if we changed the name of the controllers, we would have to change them EVERYWHERE they are invoked inside the controller module.
+
+var controller = (function(budgetCtrl, UIctrl){
+    // more code
+
+    var z = budgetCtrl.publicTest(5);
+
+    return {
+        controllerTest: function(){
+            console.log(z);
+        }
+    }
+})(budgetController, UIController)
+
+controller.controllerTest()
