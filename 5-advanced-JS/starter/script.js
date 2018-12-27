@@ -322,11 +322,6 @@ var Question = function(question, answers, correctAnswer){
 
 //////// .prototype methods    /////////////////////////
 
-
-Question.prototype.pushIt = function(){
-    questionList.push(this);
-}
-
 Question.prototype.showAnswerList = function(){
 
     // Print the question
@@ -338,12 +333,22 @@ Question.prototype.showAnswerList = function(){
     }
 }
 
-Question.prototype.checkResponse = function(ans){
+Question.prototype.checkResponse = function(ans, fn){
+    var sc;
+    
     if(this.correctAnswer == ans){
         console.log("Correct!")
+        sc = fn(true);
     } else {
         console.log("You chose...poorly.");
+        sc = fn(false);
     }
+    this.displayScore(sc);
+}
+
+Question.prototype.displayScore = function(score){
+    console.log('Your current score is ' + score);
+    console.log('----------------------------------');
 }
 
 //// Questions for the list //////////////////////////////////////////////
@@ -367,23 +372,42 @@ var pope = new Question('The pope is...', ['Benedictine', 'Pauline',
 
 var questionList = [sky, water, bear, pope];
 
+function score() {
+    var sc = 0;
+    return function(correct){
+        if(correct){
+            sc ++;
+        }
+        return sc;
+    }
+}
+
+var keepScore = score();
+
 function nextQuestion(){
 
     // this function chooses a question at random and displays it.
-    var questionSelector = (Math.floor(Math.random() * questionList.length));
+    var n = Math.floor(Math.random() * questionList.length);
         
-    // uses the random number in questionSelector to pick a question.
-    questionList[questionSelector].showAnswerList();
-    
+    // uses the random number in   n   to pick a question.
+    questionList[n].showAnswerList();
+
     //ask what their guess is.
     var input = prompt("Please enter the number of your guess","0");
-    
-    questionList[questionSelector].checkResponse(input);
 
-    nextQuestion()
+    if (input == 'exit'){
+        console.log('Thanks for playing!');
+    } else {
+        questionList[n].checkResponse(input, keepScore);
+        nextQuestion();
+    }
+
 }
 
 nextQuestion();
+
+
+
 
 // end of the IIFE
 })()
