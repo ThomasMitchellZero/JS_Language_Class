@@ -29,44 +29,80 @@ UPDATE THE UI
 
 */
 
+//////// MODULE DEFINITIONS ///////////////////////////
 
-
-// making an IIFE for data privacy
+// BUDGET CONTROLLER ////
 var budgetController = (function(){
     
-    // when budget controller is invoked, a var x is created and set to 23 in the new execution context.  
-    var x = 23
-    // same thing here.  A named function is created.
-    var add = function(a){
-        return x + a;
-    }
-
-    return {
-        publicTest: function(b){
-            return(add(b));
-        }
-    }
-
 })();
+
+// UI CONTROLLER ////
 
 
 var UIController = (function(){
-    // some code later
+
+    var DOMstrings = {
+        inputType: ".add__type",
+        inputDescription: ".add__description",
+        inputValue: ".add__value",
+        inputButton: ".add__btn",
+    }
+
+    return {
+        // this will be used by other modules so it has to be a public function.  But why is it a function that returns an object and not just the object?  Maybe so the methods don't get overwritten?
+        getInput: function(){
+            return {
+                // will return either 'inc' or 'exp'
+                type: document.querySelector(DOMstrings.inputType).value,
+                description: document.querySelector(DOMstrings.inputDescription).value,
+                value: document.querySelector(DOMstrings.inputValue).value,
+            }
+        },
+
+        getDOMstrings: function(){
+            return DOMstrings;
+        },
+    }
+
+
 })();
 
 
-// the reason we are accepting the other controllers as parameters and not just calling them inside is because if we changed the name of the controllers, we would have to change them EVERYWHERE they are invoked inside the controller module.
 
+
+// GLOBAL APP CONTROLLER ////
 var controller = (function(budgetCtrl, UIctrl){
-    // more code
 
-    var z = budgetCtrl.publicTest(5);
+    // we import the DOMstrings object from UIcontrol moduel that we made available via 
+    var DOM = UIctrl.getDOMstrings();
+    // Does all necessary operations for when the user hits Enter.
+    var ctrlAddItem = function(){
 
-    return {
-        controllerTest: function(){
-            console.log(z);
-        }
+    // get the field input data
+        
+        // UIctrl points to UIcontroller because we pass it as a variable to the controller function, and getInput is a method of UIController.
+        var input = UIctrl.getInput();
+        console.log(input);
+
+
+
+        // add the item to the budget controller
+
+        // add the new item to the user interface
+
+        // Calculate the budget
+
+        // Display the budget in the UI
     }
-})(budgetController, UIController)
 
-controller.controllerTest()
+    // listens for a click on .add__btn and runs the ctrlAddItem function.
+    document.querySelector(DOM.inputButton).addEventListener('click',ctrlAddItem);
+
+    // this is how we listen for a key being pressed - in this case, Enter
+    document.addEventListener("keypress", function(event){
+        if (event.keyCode === 13){
+            ctrlAddItem();
+        }
+    })
+
+})(budgetController, UIController)
