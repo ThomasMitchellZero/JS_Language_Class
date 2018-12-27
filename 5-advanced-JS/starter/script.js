@@ -312,7 +312,7 @@ johnFriendly('morning');
 
 (function(){
 
-    var questionList =[];
+
 
 var Question = function(question, answers, correctAnswer){
     this.question = question;
@@ -338,8 +338,8 @@ Question.prototype.showAnswerList = function(){
     }
 }
 
-Question.prototype.checkResponse = function(){
-    if(this.correctAnswer == input){
+Question.prototype.checkResponse = function(ans){
+    if(this.correctAnswer == ans){
         console.log("Correct!")
     } else {
         console.log("You chose...poorly.");
@@ -349,32 +349,41 @@ Question.prototype.checkResponse = function(){
 //// Questions for the list //////////////////////////////////////////////
 
 var sky = new Question('Is the sky blue?', ['Aye', 'Nay','maybe'], 0)
-sky.pushIt();
+
 
 var water = new Question('Is water wet?', ['Yes', 'No', 
     "Your mom's wet"], 0)
-water.pushIt();
+
 
 var bear = new Question('Does a bear shit in the woods?', ["Ja", "Nein", 
     "Only until house-trained"], 2)
-bear.pushIt();
+
 
 var pope = new Question('The pope is...', ['Benedictine', 'Pauline', 
     "Palpatine"], 2)
-pope.pushIt();
 
 
+/////  Actual program running  //////// 
 
+var questionList = [sky, water, bear, pope];
 
-// this function chooses a question at random and displays it.
-var questionSelector = (Math.floor(Math.random() * questionList.length));
+function nextQuestion(){
+
+    // this function chooses a question at random and displays it.
+    var questionSelector = (Math.floor(Math.random() * questionList.length));
+        
+    // uses the random number in questionSelector to pick a question.
+    questionList[questionSelector].showAnswerList();
     
-// uses the random number in questionSelector to pick a question.
-questionList[questionSelector].showAnswerList();
+    //ask what their guess is.
+    var input = prompt("Please enter the number of your guess","0");
+    
+    questionList[questionSelector].checkResponse(input);
 
-//ask what their guess is.
-var input = prompt("Please enter the number of your guess","0");
+    nextQuestion()
+}
 
-questionList[questionSelector].checkResponse();
+nextQuestion();
 
+// end of the IIFE
 })()
