@@ -1,31 +1,4 @@
 /*
-CONTROLLER MODULE:
--------------
-ADD EVENT HANDLER
-
-
-DATA MODULE:
----------------------
-ADD NEW ITEM TO DATA STRUCTURE
-
-
--Add an event/listenter to the OK button
--Need to create a Function Constructor to make a new object of every entry.
--Collect the user's input (+/-, description, value) from the input fields
-
--Add credits to the Income side and add debits to the Expenses side
-
-
-UI MODULE:
-----------------
-GET INPUT VALUES
-ADD NEW ITEM TO THE UI
-UPDATE THE UI
-
-
--Function Constructor needs a .prototype method that deletes the entry.
-
--Also needs a .prototype method to calculate each expense's percentage of the total.
 
 */
 
@@ -34,12 +7,14 @@ UPDATE THE UI
 // BUDGET CONTROLLER ////
 var budgetController = (function(){
 
+    // function contstructor for new expenses
     var Expense = function(id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
     }
 
+    // function contstructor for new Income
     var Income = function(id, description, value){
         this.id = id;
         this.description = description;
@@ -60,14 +35,23 @@ var budgetController = (function(){
 
     return {
 
-        // This function adds the user's inputs to the database.
+        // Adds the arguments it is given to the database.
         addItem: function(type, des, val){
             
             var newItem, ID;
-                // type will be either inc or exp, so this picks the appropriate array to check. This gets the lenght of the chosen array and then this just gets the id property(the number) of the last item in the array, then adds 1 to that.  This generates a new ID 1 bigger than the previous largest.
+
+            //// This section generates a unique ID number for each entry being added to the DB.  Each new object created is pushed to the end of the array, and the next ID will be ++ the last ID, so the IDs will always be in ascending numerical order.
 
             if(data.allItems[type].length > 0){
-                ID = (data.allItems[type][data.allItems[type].length -1].id +1);
+
+                // allItems object, then picks the array that matches the type ('inc' or 'expense' since we are storing them in two arrays)
+                ID = (data.allItems[type]
+
+                    // This gets the last element in that array.  Because arrays are zero-based, (.length - 1) always gets you the index of the last element in an array.
+                    [data.allItems[type].length -1]
+
+                    // gets the value of the ID property of that last element and adds 1 to it.  
+                    .id +1);
             } else {
                 ID = 0;
             };
@@ -82,6 +66,7 @@ var budgetController = (function(){
                 newItem = new Income(ID, des, val);
 
             };
+
             // I don't remember seeing this pattern before.  Looks like the brackets allow you to specify the property you want to access by passing a string to the brackets?
             data.allItems[type].push(newItem);
             return newItem;
@@ -102,9 +87,12 @@ var UIController = (function(){
         inputDescription: ".add__description",
         inputValue: ".add__value",
         inputButton: ".add__btn",
+        incomeContainer: ".income__list",
+        expenseContainer: ".expenses__list"
     }
 
     return {
+
         // this will be used by other modules so it has to be a public function.  But why is it a function that returns an object and not just the object?  Maybe so the methods don't get overwritten?
         getInput: function(){
             return {
@@ -115,11 +103,44 @@ var UIController = (function(){
             }
         },
 
+        addListItem: function(obj, type){
+        
+        var newHtml, id, description, value, percentage, element;
+        
+        id = obj.id;
+        value = obj.value;
+        description = obj.description;
+        percentage = 0
+
+
+        // create HTML string with placeholder text
+        if(type === 'inc'){
+
+            // Points to the Incomes container
+            element = DOMstrings.incomeContainer
+
+            // this is just a string of HTML, but the  obj  argument will be an object containing the properties that will be used to fill in the placeholders.
+            newHtml = `<div class="item clearfix" id="income-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">+ ${value}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+
+        } else if(type === 'exp'){
+            // Points it to Expenses instead of Incomes
+            element = DOMstrings.expenseContainer
+            // same as above
+            newHtml =`<div class="item clearfix" id="expense-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">- ${value}</div><div class="item__percentage">$${percentage}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+        }
+        
+        // element  was set to either the Expenses container or the Income container by the previous If/Else statement.  This inserts the newHtml string we created with the correct values into the DOM.  The "beforeend" property just means it will be the last item.
+        document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+
+            // replace placeholder text with actual data
+
+            // insert the HTML into the DOM
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         },
     }
-
 
 })();
 
@@ -129,9 +150,10 @@ var UIController = (function(){
 // GLOBAL APP CONTROLLER ////
 var controller = (function(budgetCtrl, UIctrl){
 
+    // tells the program to respond to clicking OK or hitting Enter.
     var setupEventListeners = function(){
-        // DOM elements are only needed for event listeners, so they can go in here.  We're importing the contents of the DOMstring object from the UIcontrol module.
 
+        // DOM elements are only needed for event listeners, so they can go in here.  We're importing the contents of the DOMstring object from the UIcontrol module.
         var DOM = UIctrl.getDOMstrings();
 
         // listens for a click on .add__btn and runs the ctrlAddItem function.
@@ -145,21 +167,21 @@ var controller = (function(budgetCtrl, UIctrl){
         });
 
     };
-    setupEventListeners();
 
-
-    // Does all necessary operations for when the user hits Enter.
+ 
+    // When user hits enter, everything in here will be executed..
     var ctrlAddItem = function(){
 
         var input, newItem;
         
         // This stores the values that the user enters as an object.
-        var input = UIctrl.getInput();
+        input = UIctrl.getInput();
 
         // takes the object in  input  and passes its properties as arguments to the addItem method from budgetController.  Then it stores the entry as an object in the database.
         newItem = budgetCtrl.addItem (input.type, input.description, input.value);
 
-
+        // calls the addListItem method to add the newItem to the HTML.  Of note, we are passing it  newItem  as the first argument not  input.  This is for two reasons.  First, the unique ID number is generated as part of the addItem method.  input doesn't have a unique ID.  Second, addItem doesn't JUST push the object to the database.  It also returns the object it just pushed, which is what the addListItem method is able to pull properties from.
+        UIctrl.addListItem(newItem, input.type)
 
         // add the item to the budget controller
 
