@@ -99,7 +99,8 @@ var UIController = (function(){
                 // will return either 'inc' or 'exp'
                 type: document.querySelector(DOMstrings.inputType).value,
                 description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value,
+                // parseFloat turns a string into a decimal number
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value),
             }
         },
 
@@ -175,7 +176,7 @@ var UIController = (function(){
 // GLOBAL APP CONTROLLER ////
 var controller = (function(budgetCtrl, UIctrl){
 
-    // tells the program to respond to clicking OK or hitting Enter.
+    // tells the program how to respond to user clicking OK or hitting Enter.
     var setupEventListeners = function(){
 
         // DOM elements are only needed for event listeners, so they can go in here.  We're importing the contents of the DOMstring object from the UIcontrol module.
@@ -193,7 +194,10 @@ var controller = (function(budgetCtrl, UIctrl){
 
     };
 
- 
+    var updateBudget = function(){
+
+    }
+
     // When user hits enter, everything in here will be executed..
     var ctrlAddItem = function(){
 
@@ -202,22 +206,29 @@ var controller = (function(budgetCtrl, UIctrl){
         // This stores the values that the user enters as an object.
         input = UIctrl.getInput();
 
-        // takes the object in  input  and passes its properties as arguments to the addItem method from budgetController.  Then it stores the entry as an object in the database.
-        newItem = budgetCtrl.addItem (input.type, input.description, input.value);
 
-        // calls the addListItem method to add the newItem to the HTML.  Of note, we are passing it  newItem  as the first argument not  input.  This is for two reasons.  First, the unique ID number is generated as part of the addItem method.  input doesn't have a unique ID.  Second, addItem doesn't JUST push the object to the database.  It also returns the object it just pushed, which is what the addListItem method is able to pull properties from.
-        UIctrl.addListItem(newItem, input.type)
+        // prevents the app from taking empty entries
+        if(input.description !== "" && !isNaN(input.value) && input.value > 0){
+            
+            // takes the object in  input  and passes its properties as arguments to the addItem method from budgetController.  Then it stores the entry as an object in the database.
+            newItem = budgetCtrl.addItem (input.type, input.description, input.value);
 
-        // this method clears the input fields whenever the user enters a value
-        UIctrl.clearFields();
+            // calls the addListItem method to add the newItem to the HTML.  Of note, we are passing it  newItem  as the first argument not  input.  This is for two reasons.  First, the unique ID number is generated as part of the addItem method.  input doesn't have a unique ID.  Second, addItem doesn't JUST push the object to the database.  It also returns the object it just pushed, which is what the addListItem method is able to pull properties from.
+            UIctrl.addListItem(newItem, input.type)
 
-        // add the item to the budget controller
+            // this method clears the input fields whenever the user enters a value
+            UIctrl.clearFields();
 
-        // add the new item to the user interface
+            // add the item to the budget controller
 
-        // Calculate the budget
+            // add the new item to the user interface
 
-        // Display the budget in the UI
+            // Calculate the budget
+
+            // Display the budget in the UI
+
+        };
+
     };
 
     // ONLY returned objects will EVER be accessible outside the scope of an IIFE.
