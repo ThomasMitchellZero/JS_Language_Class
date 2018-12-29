@@ -137,10 +137,35 @@ var UIController = (function(){
             // insert the HTML into the DOM
         },
 
+        clearFields: function(){
+            var fields, fieldsArr;
+
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ", " + DOMstrings.inputValue);
+            
+            // Holy method chain, Batman!  OK.  We want to slice this string, but slice is not a method of the string object.  It is a method of the array object. So.  From the Array object, we get its Prototype object, from which we get its slice method.  All functions have a property called .call, which will call the method on the object passed to it as an argument - in this case, the  fields  object.
+            fieldsArr = Array.prototype.slice.call(fields);
+
+            // forEach loops over all the elements.  It has access to the current element, the index of that element, and the array as a whole.
+            fieldsArr.forEach(function(current, index, array){
+                // goes through each element in the array and sets it to an empty string.
+                current.value = "";
+            });
+
+            // sets the cursor location back to Description. 
+            
+            //AFAICT here's how this works.  fieldsARR is an array with two elements.  We got those elements from slicing the string we got from  fields,  which we got from querySelectorAll of a concatentation of DOMstrings.inputDescription and DOMstrings.inputValue, which are properties in the DOMstring object that contain ".add__description" and ".add__value".  Yikes.
+
+            fieldsArr[0].focus();
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         },
     }
+
+
+
+
 
 })();
 
@@ -182,6 +207,9 @@ var controller = (function(budgetCtrl, UIctrl){
 
         // calls the addListItem method to add the newItem to the HTML.  Of note, we are passing it  newItem  as the first argument not  input.  This is for two reasons.  First, the unique ID number is generated as part of the addItem method.  input doesn't have a unique ID.  Second, addItem doesn't JUST push the object to the database.  It also returns the object it just pushed, which is what the addListItem method is able to pull properties from.
         UIctrl.addListItem(newItem, input.type)
+
+        // this method clears the input fields whenever the user enters a value
+        UIctrl.clearFields();
 
         // add the item to the budget controller
 
