@@ -85,7 +85,6 @@ var budgetController = (function(){
         },
 
         calculateBudget: function(){
-            var totInc, totExp
 
             // sums all array entries of the Expense and Income arrays
             calculateTotal('exp');
@@ -255,6 +254,7 @@ var controller = (function(budgetCtrl, UIctrl){
 
     };
 
+    // Does everything needed to add a new entry to the database, return those values, and put them in the DOM.
     var updateBudget = function(){
         
         // Running this creates the values for total expenses, total income, budget, and percentage in the database.
