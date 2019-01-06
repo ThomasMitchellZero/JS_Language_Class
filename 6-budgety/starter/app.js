@@ -5,6 +5,13 @@
 //////// MODULE DEFINITIONS ///////////////////////////
 
 // BUDGET CONTROLLER ////
+
+// So I think the way this works (i.e. the reason the values in the DB don't keep getting reset) is that this function and the UI controller are actually only invoked once.  They are passed as arguments to   controller   AKA the GLOBAL APP CONTROLLER, which AFAICT means they are invoked immediately.   Remember, these functions return objects.  So every time I see something like newItem = budgetCtrl.addItem    that doesn't mean that budgetCtrl is being called again.  It means that the addItem method of budgetCtrl is being called, and that method is only available to me because it was returned as an object the one time BudgetCtrl was called.
+
+
+
+
+
 var budgetController = (function(){
 
     // function contstructor for new expenses
@@ -133,6 +140,7 @@ var UIController = (function(){
         percentageLabel: ".budget__expenses--percentage",
         incomeLabel: ".budget__income--value",
         expensesLabel: ".budget__expenses--value",
+        container: ".container",
     };
 
     return {
@@ -165,13 +173,13 @@ var UIController = (function(){
             element = DOMstrings.incomeContainer
 
             // this is just a string of HTML, but the  obj  argument will be an object containing the properties that will be used to fill in the placeholders.
-            newHtml = `<div class="item clearfix" id="income-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">+ ${value}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+            newHtml = `<div class="item clearfix" id="inc-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">+ ${value}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
 
         } else if(type === 'exp'){
             // Points it to Expenses instead of Incomes
             element = DOMstrings.expenseContainer
             // same as above
-            newHtml =`<div class="item clearfix" id="expense-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">- ${value}</div><div class="item__percentage">$${percentage}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+            newHtml =`<div class="item clearfix" id="exp-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">- ${value}</div><div class="item__percentage">$${percentage}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
         }
         
         // element  was set to either the Expenses container or the Income container by the previous If/Else statement.  This inserts the newHtml string we created with the correct values into the DOM.  The "beforeend" property just means it will be the last item.
@@ -252,6 +260,9 @@ var controller = (function(budgetCtrl, UIctrl){
             }
         });
 
+        // This listens for clicks and invokes a function to delete the item that was clicked.    We are listening on DOM.container because that is the lowest-level DOM element that contains both the Incomes and Expenses elements.
+        document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
+
     };
 
     // Does everything needed to add a new entry to the database, return those values, and put them in the DOM.
@@ -295,6 +306,31 @@ var controller = (function(budgetCtrl, UIctrl){
 
     };
 
+    var ctrlDeleteItem = function(event){
+
+        var itemID, splitID, type, ID;
+
+        // Gets the target of the click event (<i></i>) then looks 4 parent nodes up the tree, and gets the ID of that node.  
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        // if() statement so we only run this operation if we find an ID on the element.  This works because the Income and Expenses are the ONLY elements with IDs in the entire DOM.  
+        if(itemID){
+
+            // The ItemID is the unique ID that each Expense or Income element  has generated for it by the addItem method of budgetController.  This take the string and returns an array containing two strings - whatever it found before the argument, and whatever it found after.
+            splitID = itemID.split("-");
+            
+            // we need the type to know whether to look in Income or Expense
+            type = splitID[0];
+
+            // we need to know the unique ID because we are going to delete this from the DB and the DOM.
+            ID = splitID[1];
+
+
+            
+
+        }
+    };
+
     // ONLY returned objects will EVER be accessible outside the scope of an IIFE.
     return {
         // again, not sure why we have the anonymous function insteaod of just calling setupEventListeners();
@@ -314,6 +350,7 @@ var controller = (function(budgetCtrl, UIctrl){
         },
     }
 
+// passing these two arguments in parentheses after the definition means that this function is invoked instantly.  IIOW, as soon as the program gets to here, controller    is run.  
 })(budgetController, UIController)
 
 controller.init();
