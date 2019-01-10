@@ -19,24 +19,24 @@ var budgetController = (function(){
         this.id = id;
         this.description = description;
         this.value = value;
-    }
+    };
 
     // function contstructor for new Income
     var Income = function(id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
-    }
+    };
 
     var calculateTotal = function(type){
-        var sum = 0
+        var sum = 0;
         data.allItems[type].forEach(function(cur){
             
             // Note that .value isn't a method.  Every item in the  exp  and  inc  arrays  is an object.  .value is the property those objects that actually contains the number.
             sum += cur.value;
         });
         data.totals[type] = sum;
-    }
+    };
 
     // not sure why this is the best data structure.  Hoping for clarification later today.
     var data = {
@@ -73,7 +73,7 @@ var budgetController = (function(){
                     .id +1);
             } else {
                 ID = 0;
-            };
+            }
             
             
             
@@ -84,7 +84,7 @@ var budgetController = (function(){
             } else {
                 newItem = new Income(ID, des, val);
 
-            };
+            }
 
             // I don't remember seeing this pattern before.  Looks like the brackets allow you to specify the property you want to access by passing a string to the brackets?
             data.allItems[type].push(newItem);
@@ -97,7 +97,7 @@ var budgetController = (function(){
             calculateTotal('exp');
             calculateTotal('inc');
             
-            data.budget = data.totals.inc; - data.totals.exp;
+            data.budget = data.totals.inc - data.totals.exp;
 
             // Divides expenses by income, * 100 for an even number, and then Math.rounds it off.
             if(data.totals.inc > 0){
@@ -119,7 +119,9 @@ var budgetController = (function(){
             };
         },
 
-        testing: function(){console.log(data)},
+        testing: function(){
+            console.log(data);
+        }
     };
 })();
 
@@ -153,7 +155,7 @@ var UIController = (function(){
                 description: document.querySelector(DOMstrings.inputDescription).value,
                 // parseFloat turns a string into a decimal number
                 value: parseFloat(document.querySelector(DOMstrings.inputValue).value),
-            }
+            };
         },
 
         addListItem: function(obj, type){
@@ -163,23 +165,23 @@ var UIController = (function(){
         id = obj.id;
         value = obj.value;
         description = obj.description;
-        percentage = 0
+        percentage = 0;
 
 
         // create HTML string with placeholder text
         if(type === 'inc'){
 
             // Points to the Incomes container
-            element = DOMstrings.incomeContainer
+            element = DOMstrings.incomeContainer;
 
             // this is just a string of HTML, but the  obj  argument will be an object containing the properties that will be used to fill in the placeholders.
-            newHtml = `<div class="item clearfix" id="inc-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">+ ${value}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+            newHtml = `<div class="item clearfix" id="inc-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">+ ${value}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`;
 
         } else if(type === 'exp'){
             // Points it to Expenses instead of Incomes
-            element = DOMstrings.expenseContainer
+            element = DOMstrings.expenseContainer;
             // same as above
-            newHtml =`<div class="item clearfix" id="exp-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">- ${value}</div><div class="item__percentage">$${percentage}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`
+            newHtml =`<div class="item clearfix" id="exp-${id}"><div class="item__description">${description}</div><div class="right clearfix"><div class="item__value">- ${value}</div><div class="item__percentage">$${percentage}</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`;
         }
         
         // element  was set to either the Expenses container or the Income container by the previous If/Else statement.  This inserts the newHtml string we created with the correct values into the DOM.  The "beforeend" property just means it will be the last item.
@@ -233,7 +235,7 @@ var UIController = (function(){
         getDOMstrings: function(){
             return DOMstrings;
         },
-    }
+    };
 
 
 })();
@@ -275,7 +277,7 @@ var controller = (function(budgetCtrl, UIctrl){
         var budget = budgetCtrl.getBudget();
         
         UIctrl.displayBudget(budget);
-    }
+    };
 
     // When user hits enter, everything in here will be executed..
     var ctrlAddItem = function(){
@@ -293,7 +295,7 @@ var controller = (function(budgetCtrl, UIctrl){
             newItem = budgetCtrl.addItem (input.type, input.description, input.value);
 
             // calls the addListItem method to add the newItem to the HTML.  Of note, we are passing it  newItem  as the first argument not  input.  This is for two reasons.  First, the unique ID number is generated as part of the addItem method.  input doesn't have a unique ID.  Second, addItem doesn't JUST push the object to the database.  It also returns the object it just pushed, which is what the addListItem method is able to pull properties from.
-            UIctrl.addListItem(newItem, input.type)
+            UIctrl.addListItem(newItem, input.type);
 
             // this method clears the input fields whenever the user enters a value
             UIctrl.clearFields();
@@ -302,7 +304,7 @@ var controller = (function(budgetCtrl, UIctrl){
 
         
 
-        };
+        }
 
     };
 
@@ -348,9 +350,9 @@ var controller = (function(budgetCtrl, UIctrl){
             });
 
         },
-    }
+    };
 
 // passing these two arguments in parentheses after the definition means that this function is invoked instantly.  IIOW, as soon as the program gets to here, controller    is run.  
-})(budgetController, UIController)
+})(budgetController, UIController);
 
 controller.init();
