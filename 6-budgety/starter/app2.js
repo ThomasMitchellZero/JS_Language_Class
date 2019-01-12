@@ -120,7 +120,7 @@ var budgetController = (function(){
             calculateTotal('exp');
             calculateTotal('inc');
             
-            data.budget = data.totals.inc - data.totals.exp;
+            data.budget = data.totals.inc; - data.totals.exp;
 
             // Divides expenses by income, * 100 for an even number, and then Math.rounds it off.
             if(data.totals.inc > 0){
@@ -308,17 +308,6 @@ var controller = (function(budgetCtrl, UIctrl){
         var budget = budgetCtrl.getBudget();
         
         UIctrl.displayBudget(budget);
-    };
-    var updatePercentages = function(){
-
-        // 1. Calculate percentages
-
-        // 2. Get percentages from budgetController
-
-        // 3. Update UI
-
-
-
     }
 
     // When user hits enter, everything in here will be executed..
@@ -344,7 +333,7 @@ var controller = (function(budgetCtrl, UIctrl){
 
             updateBudget();
 
-            updatePercentages();
+        
 
         };
 
@@ -374,9 +363,7 @@ var controller = (function(budgetCtrl, UIctrl){
             // 2.  Delete item from UI
             UIctrl.deleteListItem(itemID);
             // 3.  Update and show new budget
-            updateBudget();
-
-            updatePercentages();
+            
 
         }
     };
