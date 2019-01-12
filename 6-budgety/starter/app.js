@@ -91,6 +91,29 @@ var budgetController = (function(){
             return newItem;
         },
 
+        deleteItem: function(type, id){
+
+            var ids, index
+            
+            // The IDs are stored as values of objects in the exp and inc arrays, and the IDs are not related to array position.  We're going to create a new array containing the ID values of each element.  This seems to have more steps than it ought to, and I don't like this data model.  
+
+            // .map creates a new array containing the results of calling a function on each element in an array.
+            var ids = data.allItems[type].map(function(current){
+                return current.id;
+            });
+
+            // now we have a second array, and the position of each array element corresponds to the position of the object it was created from.  That means that the index of an element that matches   id   will be the index of the element we want to delete from the database.
+
+            index = ids.indexOf(id)
+
+            // if a match is found, delete the one item found at that index from data.allitems
+            
+            if(index !== -1){
+                data.allItems[type].splice(index, 1);
+            }
+
+        },
+
         calculateBudget: function(){
 
             // sums all array entries of the Expense and Income arrays
@@ -310,7 +333,7 @@ var controller = (function(budgetCtrl, UIctrl){
 
         var itemID, splitID, type, ID;
 
-        // Gets the target of the click event (<i></i>) then looks 4 parent nodes up the tree, and gets the ID of that node.  
+        // Gets the target of the click event (<i></i>) then looks 4 parent nodes up the tree, and gets the ID of that node.  Target just means the element that was clicked on.
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
         // if() statement so we only run this operation if we find an ID on the element.  This works because the Income and Expenses are the ONLY elements with IDs in the entire DOM.  
@@ -323,9 +346,13 @@ var controller = (function(budgetCtrl, UIctrl){
             type = splitID[0];
 
             // we need to know the unique ID because we are going to delete this from the DB and the DOM.
-            ID = splitID[1];
+            ID = parseInt(splitID[1]);
 
+            // 1.  Delete item from data structure
+            budgetCtrl.deleteItem(type, ID);
+            // 2.  Delete item from UI
 
+            // 3.  Update and show new budget
             
 
         }
