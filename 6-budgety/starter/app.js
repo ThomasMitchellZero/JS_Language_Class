@@ -6,7 +6,7 @@
 
 // BUDGET CONTROLLER ////
 
-// So I think the way this works (i.e. the reason the values in the DB don't keep getting reset) is that this function and the UI controller are actually only invoked once.  They are passed as arguments to   controller   AKA the GLOBAL APP CONTROLLER, which AFAICT means they are invoked immediately.   Remember, these functions return objects.  So every time I see something like newItem = budgetCtrl.addItem    that doesn't mean that budgetCtrl is being called again.  It means that the addItem method of budgetCtrl is being called, and that method is only available to me because it was returned as an object the one time BudgetCtrl was called.
+// So I think the way this works (i.e. the reason the values in the DB don't keep getting reset) is that this function and the UI controller are actually only invoked once.  They are passed as arguments to   controller   AKA the GLOBAL APP CONTROLLER, which AFAICT means they are invoked immediately.   Remember, these functions return objects.  So every time I see something like newItem = budgetCtrl.addItem    that doesn't mean that budgetCtrl is being called again.  It means that the addItem method of budgetCtrl is being called, and that method is only available to me because it was returned as one member of the object the one time BudgetCtrl was called.
 
 
 
@@ -19,6 +19,21 @@ var budgetController = (function(){
         this.id = id;
         this.description = description;
         this.value = value;
+        // setting percentage to -1 because it's going to be defined by our calcPercentage method.  
+        this.percentage = -1;
+    };
+    // each item in Expense will also have a method to calculate its percentage of the total.  This calculates the percentage and then assigns that value to the   .percentage   property of each object in the exp array.
+    Expense.prototype.calcPercentage = function(totalIncome){
+        // we only want to do this if there is an income so it doesn't look weird.
+        if (totalIncome > 0){
+            this.percentage = Math.round((this.value / totalIncome)*100);
+        } else {
+            this.percentage = -1;
+        };
+    };
+    // This returns just returns the value of the percentage.
+    Expense.prototype.getPercentage = function(){
+        return this.percentage;
     }
 
     // function contstructor for new Income
@@ -26,7 +41,7 @@ var budgetController = (function(){
         this.id = id;
         this.description = description;
         this.value = value;
-    }
+    };
 
     var calculateTotal = function(type){
         var sum = 0
@@ -36,7 +51,7 @@ var budgetController = (function(){
             sum += cur.value;
         });
         data.totals[type] = sum;
-    }
+    };
 
     // not sure why this is the best data structure.  Hoping for clarification later today.
     var data = {
@@ -132,6 +147,26 @@ var budgetController = (function(){
 
         },
 
+        calculatePercentages: function(){
+            
+            data.allItems.exp.forEach(function(cur){
+
+                //We are passing in the total income from the database as the parameter for calcPercentage because it needs to know the total.
+                cur.calcPercentage(data.totals.inc);
+            })
+            
+        },
+
+        // I almost got tripped up here.  getPercentage is an internal function, while getPercentages is exposed to the outside.
+
+        getPercentages: function(){
+            // this goes through the array of expenses, and for each item, it gets the percentange and then puts that percentage in to a new array, allPerc, where the percentage has the same index as the expense it came from. 
+            var allPerc = data.allItems.exp.map(function(cur){
+                return cur.getPercentage();
+            })
+            return allPerc;
+        },
+
         // we could return these values as part of calculateBudget, but the instructor says it's better to have separate functions for separate oeprations.
         getBudget: function(){
             return{
@@ -164,6 +199,7 @@ var UIController = (function(){
         incomeLabel: ".budget__income--value",
         expensesLabel: ".budget__expenses--value",
         container: ".container",
+        expensesPercLabel: ".item__percentage",
     };
 
     return {
@@ -263,6 +299,37 @@ var UIController = (function(){
             console.log(obj);
         },
 
+        displayPercentages: function(percentages){
+
+            // this selects every HTML node with the class of .item__percentage which is what we stored in the expensesPercLabel variable.   The results of this selection are stored in  fields,  although I don't know what exactly is stored there.  
+            var fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
+
+            var nodeListForEach = function(list, callBack){
+                // we can do this because while the node list does not have most array properties, it DOES have a length property.
+                for(var i = 0; i < list.length; i++){
+                    // the function we are going to call will need the contents of the current node and its index.  Hence the two parameters we are passing the callback.  I assume this is to make the function more generalizable, because otherwhise I don't see why we should pass it as an argument instead of defining it here. 
+                    
+                    // what is kind of cool is that we'll start the function
+                    callBack(list[i], i);
+
+                }
+            };
+budgetController
+            nodeListForEach(fields, function(current, index){
+                
+                // if statement because we don't want to do this for zero.
+                if (percentages[index] > 0){
+
+                        // the getPercentages method in the budgetController object returns a list of all percentages.  That's what we'll be passing to this.
+                    current.textContent = percentages[index] +'%';
+                } else {
+                    current.textContent = '---';
+                };
+
+                
+            })
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         },
@@ -312,14 +379,14 @@ var controller = (function(budgetCtrl, UIctrl){
     var updatePercentages = function(){
 
         // 1. Calculate percentages
-
+        budgetCtrl.calculatePercentages();
         // 2. Get percentages from budgetController
-
+        var percentages = budgetCtrl.getPercentages();
         // 3. Update UI
+        UIctrl.displayPercentages(percentages);
 
 
-
-    }
+    };
 
     // When user hits enter, everything in here will be executed..
     var ctrlAddItem = function(){
