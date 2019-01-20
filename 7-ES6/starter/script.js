@@ -120,4 +120,42 @@ ages6 = years.map((el, index)=> `Age element is ${index +1}: ${2019 - el}`);
 console.log(ages6);
 */
 
-// 7.108
+// 7.108 Arrow Functions 2 ////
+
+//ES5
+
+var box5 = {
+    color:'green',
+    position: 1,
+    clickMe: function(){
+        // this works as expected.  this  points to the top object because it is called by a method.
+        console.log(this.color);
+        // if we replace all instances of this in the callback with self, it will now work as expected.
+        var self = this;
+        document.querySelector('.green').addEventListener('click', function() {
+            // this won't work.  The reason is that this call is not considered part of the method.  It's treated as a regular function call, so it points to the global object instead.  For the .color and .position values, all we get is   undefined.
+            var str = `This is a ${this.color} box in position ${this.position}`;
+            alert(str);
+        })
+    }
+}
+
+//box5.clickMe();
+
+
+const box6 = {
+    color:'green',
+    position: 1,
+    clickMe: function(){
+
+        document.querySelector('.green').addEventListener('click', ()=> {
+            // The arrow function works different.  It does use   this   as expected, pointing at the box6 object.  I don't know the rules for why this is.
+            var str = `This is ${this.color} box in position ${this.position}`;
+
+            alert(str);
+            console.log(a);
+        });
+    }
+}
+
+box6.clickMe();
