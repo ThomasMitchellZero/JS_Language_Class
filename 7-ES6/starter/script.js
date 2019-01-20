@@ -118,7 +118,7 @@ console.log(ages6);
 ages6 = years.map((el, index)=> `Age element is ${index +1}: ${2019 - el}`);
 
 console.log(ages6);
-*/
+
 
 // 7.108 Arrow Functions 2 ////
 
@@ -159,3 +159,43 @@ const box6 = {
 }
 
 box6.clickMe();
+
+
+// 7.109  Destructuring ////
+
+
+// ES5
+
+
+
+var john = ['John', 26];
+var name = john[0];
+var age = john[1];
+
+
+// ES6
+const [name, age] = ['John', 26];
+console.log(name);
+console.log(age);
+
+const obj = {
+    firstName: 'John',
+    lastName: 'Smith'
+};
+
+function calcAgeRetirement(year){
+    const age = new Date().getFullYear() - year;
+    return [age, 65 - age];
+}
+
+// this pattern can assign a bunch of variables at once.  Basically, running the function is run and returns an array.  Those values are assigned to the variable names with the same index as the returned values.  So   retirement  which is the second argument, gets assigned the value of 65 - age.
+
+const [age, retirement] = calcAgeRetirement(1990);
+console.log(age);
+console.log(retirement);
+
+
+*/
+
+
+
