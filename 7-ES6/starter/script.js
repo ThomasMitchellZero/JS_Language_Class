@@ -195,7 +195,77 @@ console.log(age);
 console.log(retirement);
 
 
+
+
+
+// ES5
+
+const boxes = document.querySelectorAll('.box');
+
+// this is necessary because   boxes   does not get an array from the HTML - instead it gets a node list.  Below is a hack to turn it into an array.
+
+var boxesArr5 = Array.prototype.slice.call(boxes);
+
+boxesArr5.forEach(function(cur){
+    cur.style.backgroundColor = 'dodgerblue';
+})
+
+--
+
+var boxesArr5 = Array.prototype.slice.call(boxes);
+
+for(i=0; i < boxesArr5.length; i++){
+    if (boxesArr5[i].className === 'box blue'){
+        continue
+    } else {
+        boxesArr5[i].textContent = 'I blue myself'
+    }
+}
+
+
+//ES6
+
+const boxesArr6 = Array.from(boxes);
+
+boxesArr6.forEach(cur => cur.style.backgroundColor = 'dodgerblue');
+
+// this is a   for of   loop.  AFAICT the difference is that we can use   continue   and   break   statements, which we cannot do in forEach or .map
+
+for(const cur of boxes){
+    if (cur.className.includes('blue')){
+        continue;
+    } else {
+        cur.textContent = 'I blue myself'
+    }
+}
+
+
 */
 
 
 
+
+
+
+// 7.110 Arrays ////////
+
+
+
+var ages = [12, 17, 8, 1, 14, 19];
+
+
+// ES5
+
+var ofAge = ages.map(function(cur){
+    return cur >= 18;
+})
+
+console.log(ofAge);
+
+console.log(ofAge.indexOf(true));
+console.log(ages[ofAge.indexOf(true)]);
+
+// ES6
+// this returns the index of the (AFAICT) first element for which the function is true.  
+console.log(ages.findIndex(cur => cur >= 18));
+console.log(ages.find(cur => cur >= 18));
