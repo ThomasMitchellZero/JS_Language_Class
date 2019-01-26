@@ -368,7 +368,7 @@ function SmithPerson(firstName, yearOfBirth, lastName, nationality){
     
 
     // You have to explicitly define default parameters in ES5.
-    
+
     lastName === undefined? lastName = 'Smith' : lastName = lastName;
     nationality === undefined? nationality = 'American' : nationality = nationality;
     
@@ -403,7 +403,57 @@ var emily = new SmithPerson('Emily', 1983, 'Diaz', 'Spanish');
 console.log(john);
 console.log(emily);
 
+
+
+//// 7.114 - Maps ////////
+
+const question = new Map();
+
+// the key does not have to be a string like it does with an object.
+question.set('question', 'What is the official name of the latest official JS version?')
+question.set(1, "ES5");
+question.set(2, "ES6");
+question.set(3, "ES2015");
+question.set(4, "ES7");
+question.set('correct', 3);
+question.set(true, "Correct Answer!");
+question.set(false, "Wrong answer!");
+
+// .get retrieves the value of a particular element.  
+console.log(question.get('question'));
+
+// .has  checks to see if there is a particular key
+//if(question.has(4)){console.log('4 is here');};
+
+// .clear  clears everything.
+//question.clear();
+
+// Maps are actually iterable, so we can do forEach loops on them like objects.
+
+
+question.forEach((value, key) => console.log(`This is ${key} and its value is: ${value}`))
+
+
+//////////////
+
+// AFAICT, the [] lets you define two variables at once, and  .entries gives access to the key/value pairs of the map.  
+for(let [key, value] of question.entries()){
+    
+    if(typeof(key) === 'number'){
+        console.log(`Answer${key}: ${value}`);
+    }
+}
+
+const ans = parseInt(prompt('Write number of your guess'));
+
+// this is pretty slick.  question.get(x) retrieves the value with the key of x.  In this case, we're checking to see if   ans   that we got from the prompt window === the value stored in the  'answer'  key.  If it does, then it will grab the value stored at the boolean  true  and if not, it will get the value stored at boolean  false   .  This would only work with maps because maps lets you use all primitive types as keys.    
+
+
+console.log(
+
+    question.get(ans === question.get('correct'))
+
+);
+
+
 */
-
-
-
