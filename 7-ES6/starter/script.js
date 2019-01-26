@@ -240,13 +240,6 @@ for(const cur of boxes){
 }
 
 
-*/
-
-
-
-
-
-
 // 7.110 Arrays ////////
 
 
@@ -269,3 +262,148 @@ console.log(ages[ofAge.indexOf(true)]);
 // this returns the index of the (AFAICT) first element for which the function is true.  
 console.log(ages.findIndex(cur => cur >= 18));
 console.log(ages.find(cur => cur >= 18));
+
+
+// 7.11 Spread Operator ////////
+
+function addFourAges(a, b, c, d){
+    return a + b + c + d;
+}
+
+var sum1 = addFourAges(18,30,12,21);
+
+console.log(sum1);
+
+//ES5
+var ages = [18,30,12,21];
+
+// the .apply method passes elements of an array into a function as arguments.  The first argument is set to null, but it would allow us to specify where our   this  variable would point.  
+var sum2 = addFourAges.apply(null, ages);
+console.log(sum2);
+
+//ES6
+
+// the ... operator expands an array into its elements.
+const sum3 = addFourAges(...ages);
+console.log(sum3);
+
+const familySmith = ['John', 'Jane', 'Mark'];
+const familyMiller = ['Mary', 'Bob', 'Ann'];
+const bigFamily = [...familySmith, 'Lily', ...familyMiller];
+
+console.log(bigFamily);
+
+// Spread operator also works for selecting array-like things, such as HTML elements.
+
+// Select all h1 headers
+const h = document.querySelector('h1');
+
+// select anything with the class of .box
+const boxes = document.querySelectorAll('.box');
+
+// make them into one array-like construction.
+const all = [h, ...boxes];
+
+Array.from(all).forEach(cur => cur.style.color = 'purple');
+
+//// 7.112  Rest parameters ////////
+
+// Rest parameters allow you to pass an arbitrary number of parameters into a function instead of a fixed number.  
+
+
+// ES5
+function isFullAge5(){
+    //the list of arguments we get looks like an array, but it is actually an object.  We have to turn it into an actual array before we can use array methods like   .forEach   on it.
+    var argsArray = Array.prototype.slice.call(arguments);
+    argsArray.forEach(function(cur){
+        console.log((2019 - cur) >=18)
+    })
+}
+
+//isFullAge5(1990, 2009, 1965);
+
+//ES6
+
+// the spread operator ( aka  ... ) turns the input parameters into an array as soon as they are passed to the function.  
+
+function isFullAge6(...years){
+    years.forEach(cur => console.log((2019 - cur) >=18))
+}
+
+isFullAge6(1990, 2009, 1965);
+
+// ES5
+
+// we've created a parameter,  limit  , that we want so the user can input their age.  However, the problem is that it would normally get thrown into the years array.
+
+
+function isFullAge5(limit){
+
+    // by passing this a second argument of 1, we'll start slicing at position 1, not position 0.  That way we can exclude the first argument (which is the age of maturity)
+    var argsArray = Array.prototype.slice.call(arguments, 1);
+    argsArray.forEach(function(cur){
+        console.log((2019 - cur) >= limit)
+    })
+}
+
+//isFullAge5(21, 1990, 2009, 1965);
+
+//ES6
+
+
+// With ES6, no position fuckery is necessary.  You can input any necessary variables as normal, and use the ...  operator to designate where you expect your unlimited parameters.
+
+function isFullAge6(limit, ...years){
+    years.forEach(cur => console.log((2019 - cur) >= limit))
+}
+
+isFullAge6(21, 1990, 2009, 1965, 2014);
+
+
+//// 7.113 Default Parameters
+
+//ES5
+
+function SmithPerson(firstName, yearOfBirth, lastName, nationality){
+    
+
+    // You have to explicitly define default parameters in ES5.
+    
+    lastName === undefined? lastName = 'Smith' : lastName = lastName;
+    nationality === undefined? nationality = 'American' : nationality = nationality;
+    
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+
+}
+
+var john = new SmithPerson('John', 1990);
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'Spanish');
+
+console.log(john);
+console.log(emily);
+
+//ES6
+
+// in ES6, if you set the parameter = something in the function constructor, that will be its default value.
+function SmithPerson(firstName, yearOfBirth, lastName = 'Smith', nationality = 'American'){
+    
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+
+}
+
+var john = new SmithPerson('John', 1990);
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'Spanish');
+
+console.log(john);
+console.log(emily);
+
+*/
+
+
+
