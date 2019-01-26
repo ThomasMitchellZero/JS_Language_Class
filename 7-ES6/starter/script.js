@@ -591,32 +591,58 @@ johnAthlete6.calculateAge();
 
 //// 7.117 - Coding Challenge 8 //////////////////////////////
 
-// A map containing all Parks
+// * A map containing all Parks.  Map because we will want to iterate through these.
+const allParks = new Map();
     // a method to calculate average age
     // a method to say which parks have more than 1k trees.
 
-// Map Containing all streets
-
+// * Map Containing all streets
+const allStreets = new Map();
     // method to calculate total street length
     // method to calculate average street length
 
 // A CityObject class - 
-    // properties
-        // Name
-        // yearBuilt
+class CityObject{
+    constructor(name, yearBuilt){
+        this.name = name;
+        this.yearBuilt = yearBuilt;
+    }
+}
+
+
 
 // A Parks class, extending CityObjects
+class Park extends CityObject{
+    constructor(name, yearBuilt, numberTrees, area){
+        
+        super(name, yearBuilt);
+        
+        this.numberTrees = numberTrees;
+        this.area = area;
+    }
 
-    // Properties
+    treeDensity(){
 
-        // Number of trees
-        // Park Area
+        var d = -1;
+        
+        if(this.numberTrees > 0 && this.area > 0){
+            d = (this.area/this.numberTrees); 
+        }
 
-    // Methods 
-        // calculate tree density
+        return d;
+    }
+}
+
+let wicker = new Park('Wicker Park', 1899, 55, 44);
+console.log(wicker);
+console.log(wicker.treeDensity());
+
 
 // A Street class, also extending CityObjects
     // Properties
         // Length
         // Size class, defaulting to Normal
 
+
+// Executing the Code
+    // a shitload of method calls, shouldn't be too hard.
