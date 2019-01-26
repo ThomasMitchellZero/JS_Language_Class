@@ -592,8 +592,20 @@ johnAthlete6.calculateAge();
 //// 7.117 - Coding Challenge 8 //////////////////////////////
 
 // * A map containing all Parks.  Map because we will want to iterate through these.
+
+
 const allParks = new Map();
+
     // a method to calculate average age
+    allParks.set('avgAge', function(){
+
+        //question.forEach((value, key) => console.log(`This is ${key} and its value is: ${value}`))
+
+        // Leaving off here - 
+        
+
+    })
+
     // a method to say which parks have more than 1k trees.
 
 // * Map Containing all streets
@@ -606,6 +618,8 @@ class CityObject{
     constructor(name, yearBuilt){
         this.name = name;
         this.yearBuilt = yearBuilt;
+        // automatically calculate how old it is.
+        this.age = (new Date().getFullYear()) - yearBuilt;
     }
 };
 
@@ -656,9 +670,11 @@ class Street extends CityObject{
 };
 
 
-const halsted = new Street('Halsted', 1878, 44)
+const halsted = new Street('Halsted', 1900, 44)
 console.log(halsted);
 console.log(allParks);
+console.log(allParks.get('Wicker Park').yearBuilt);
+
 
 
 // Executing the Code
