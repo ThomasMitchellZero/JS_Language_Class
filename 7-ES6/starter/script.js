@@ -455,5 +455,168 @@ console.log(
 
 );
 
+//// 7.115 - Classes ////////
 
+// ES5
+
+var Person5 = function(name, yearOfBirth, job){
+    this.firstName = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+};
+
+Person5.prototype.calculateAge = function(){
+    
+    var age = new Date().getFullYear - this.yearOfBirth;
+    console.log(age);
+
+}
+
+var john5 = new Person5('John', 1995, 'teacher');
+
+
+// ES6
+
+class Person6 {
+
+    // looks like we have to define the constructor
+    constructor(name, yearOfBirth, job){
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+    // no commas or semi-colons.  We also don't have to write Person6.prototype  but other than that I don't see any real benefit to using classes.
+    calculateAge(){
+        var age = new Date().getFullYear - this.yearOfBirth;
+        console.log(age);
+    }
+}
+
+const john6 = new Person6('John', 1990, 'teacher');
+
+
+//// 7.116 Classes and Subclasses ////////
+
+// ES5
+
+var Person5 = function(name, yearOfBirth, job){
+    this.firstName = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+};
+
+Person5.prototype.calculateAge = function(){
+    
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+}
+
+var Athlete5 = function(name, yearOfBirth, job, olympicGames, medals){
+    
+    // We have to use .call() and pass it  this   as the first keyword so that the name, yearOfBirth, and job are set as properties of the new athlete we are creating.  
+
+    Person5.call(this, name, yearOfBirth, job);
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+}
+
+
+
+// this is setting the prototype property of Athlete5 object with the same contents as the .prototype object of Person5.  AFAICT, .prototype of an object is just another object containing all properties that have specifically been made available.  So what we're saying here is that anything we've made available to objects created by Person5 will also be made available to objects created by Athlete5.
+
+
+Athlete5.prototype = Object.create(Person5.prototype)
+
+// Originally I defined the wonMedal before creating the .prototype object in the line above.  Got an error saying .wonMedal() is not a function, which makes sense.  The old version of the Athlete5 prototype object was overwritten by the copy of the Person5 prototype object, so wonMedal was eliminated.
+
+Athlete5.prototype.wonMedal = function(){
+    this.medals++;
+    console.log(this.medals);
+}
+
+var johnAthlete5 = new Athlete5('John', 1990, 'swimmer', 3, 10);
+
+johnAthlete5.calculateAge();
+johnAthlete5.wonMedal();
+
+
+
+
+// ES6
+
+class Person6 {
+
+    // looks like we have to define the constructor
+    constructor(name, yearOfBirth, job){
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+
+    calculateAge(){
+        var age = new Date().getFullYear() - this.yearOfBirth;
+        console.log(age);
+    }
+}
+
+
+// Name of the subclass     extends    name of the superclass
+
+class Athlete6 extends Person6 {
+
+    constructor(name, yearOfBirth, job, olympicGames, medals){
+        //this calls the superclass, and we're passing it the name, yearOfBirth, and job arguments we get when we create a new Athlete6()
+        super(name, yearOfBirth, job);
+        
+        this.olympicGames = olympicGames;
+        this.medals = medals;
+    }
+    wonMedal(){
+        this.medals++;
+        console.log(this.medals);
+    }
+}
+
+const johnAthlete6 = new Athlete6('John', 1990, 'swimmer', 3, 10);
+
+johnAthlete6.wonMedal();
+johnAthlete6.calculateAge();
 */
+
+
+
+
+
+
+
+//// 7.117 - Coding Challenge 8 //////////////////////////////
+
+// A map containing all Parks
+    // a method to calculate average age
+    // a method to say which parks have more than 1k trees.
+
+// Map Containing all streets
+
+    // method to calculate total street length
+    // method to calculate average street length
+
+// A CityObject class - 
+    // properties
+        // Name
+        // yearBuilt
+
+// A Parks class, extending CityObjects
+
+    // Properties
+
+        // Number of trees
+        // Park Area
+
+    // Methods 
+        // calculate tree density
+
+// A Street class, also extending CityObjects
+    // Properties
+        // Length
+        // Size class, defaulting to Normal
+
