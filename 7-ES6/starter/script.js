@@ -607,7 +607,7 @@ class CityObject{
         this.name = name;
         this.yearBuilt = yearBuilt;
     }
-}
+};
 
 
 
@@ -619,6 +619,9 @@ class Park extends CityObject{
         
         this.numberTrees = numberTrees;
         this.area = area;
+
+        // Adds this to the allParks map
+        allParks.set((this.name), this)
     }
 
     treeDensity(){
@@ -639,9 +642,23 @@ console.log(wicker.treeDensity());
 
 
 // A Street class, also extending CityObjects
-    // Properties
-        // Length
-        // Size class, defaulting to Normal
+
+class Street extends CityObject{
+    constructor(name, yearBuilt, streetLength, sizeClass = 'Normal'){
+        super(name, yearBuilt);
+
+        this.streetLength = streetLength;
+        this.sizeClass = sizeClass;
+
+        // Adds this to the allStreets map 
+        allStreets.set((this.name), this);
+    }
+};
+
+
+const halsted = new Street('Halsted', 1878, 44)
+console.log(halsted);
+console.log(allParks);
 
 
 // Executing the Code
