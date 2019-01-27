@@ -593,12 +593,16 @@ johnAthlete6.calculateAge();
 
 // * A map containing all Parks.  Map because we will want to iterate through these.
 
-
-
 const allParks = new Map();
 const allStreets = new Map();
 
-// Any function that calclulates for all defined here.
+// Any function that calclulates from multiple entries defined here.
+
+// 1. Get tree density for each park
+
+const getParkTreeDensities = function(){
+    // Stopping here 1/27.
+}
 
 // calculate total street length
 const getStreetTotalLength = function(){
@@ -608,18 +612,32 @@ const getStreetTotalLength = function(){
     })
     return sumStreetLength;
 }
-    // method to calculate average street length
+
+// calculate average street length
 const getStreetAvgLength = function(){
     return(getStreetTotalLength() / allStreets.size);
-    //return (getStreetTotalLength() / allStreets.size);
-}
-    // a method to calculate average age
-const parkAvgArea = function(){
 
 }
-    // a method to say which parks have more than 1k trees.
-const park1000trees = function(){
 
+// a method to calculate average age
+const getParkAvgArea = function(){
+    let totalArea = 0;
+    
+    allParks.forEach(function(value, key){
+        totalArea += allParks.get(key).area;
+    });
+    return (totalArea / allParks.size);
+}
+
+    // Checks which parks have more than 1k trees.
+const getPark1000trees = function(){
+    let WoodedParkArray = [];
+    allParks.forEach(function(value, key){
+        if ((allParks.get(key).numberTrees)  > 1000){
+            WoodedParkArray.push(key);
+        };
+    });
+    return WoodedParkArray;
 }
 
 
@@ -697,6 +715,9 @@ console.log(allStreets);
 
 console.log(getStreetTotalLength());
 console.log(getStreetAvgLength());
+console.log(getParkAvgArea());
+console.log(getPark1000trees());
 
 // Executing the Code
     // a shitload of method calls, shouldn't be too hard/
+
