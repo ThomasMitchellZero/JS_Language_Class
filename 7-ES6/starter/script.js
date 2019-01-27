@@ -594,24 +594,34 @@ johnAthlete6.calculateAge();
 // * A map containing all Parks.  Map because we will want to iterate through these.
 
 
+
 const allParks = new Map();
-
-    // a method to calculate average age
-    allParks.set('avgAge', function(){
-
-        //question.forEach((value, key) => console.log(`This is ${key} and its value is: ${value}`))
-
-        // Leaving off here - 
-        
-
-    })
-
-    // a method to say which parks have more than 1k trees.
-
-// * Map Containing all streets
 const allStreets = new Map();
-    // method to calculate total street length
+
+// Any function that calclulates for all defined here.
+
+// calculate total street length
+const getStreetTotalLength = function(){
+    var sumStreetLength = 0;
+    allStreets.forEach(function(value, key){
+        sumStreetLength += allStreets.get(key).streetLength;
+    })
+    return sumStreetLength;
+}
     // method to calculate average street length
+const getStreetAvgLength = function(){
+    return(getStreetTotalLength() / allStreets.size);
+    //return (getStreetTotalLength() / allStreets.size);
+}
+    // a method to calculate average age
+const parkAvgArea = function(){
+
+}
+    // a method to say which parks have more than 1k trees.
+const park1000trees = function(){
+
+}
+
 
 // A CityObject class - 
 class CityObject{
@@ -650,14 +660,14 @@ class Park extends CityObject{
     }
 }
 
-let wicker = new Park('Wicker Park', 1899, 55, 44);
-console.log(wicker);
-console.log(wicker.treeDensity());
 
 
-// A Street class, also extending CityObjects
+
+
+// A Street subclass, also extending CityObjects
 
 class Street extends CityObject{
+
     constructor(name, yearBuilt, streetLength, sizeClass = 'Normal'){
         super(name, yearBuilt);
 
@@ -670,12 +680,23 @@ class Street extends CityObject{
 };
 
 
-const halsted = new Street('Halsted', 1900, 44)
-console.log(halsted);
+// creating the streets
+new Park('Wicker Park', 1899, 55, 44);
+new Park('Bhinna Park', 1983, 56, 3);
+new Park('Piedmont Part', 1985, 2111, 4);
+new Park('Yellowstone National Park', 1882, 5000, 4400);
+
+//creating the parks
+new Street('Englewood', 1967, 22, "small");
+new Street('Halsted', 1900, 44, "big");
+new Street("Wolcott", 1902, 14, "huge");
+
 console.log(allParks);
-console.log(allParks.get('Wicker Park').yearBuilt);
+console.log(allStreets);
 
 
+console.log(getStreetTotalLength());
+console.log(getStreetAvgLength());
 
 // Executing the Code
-    // a shitload of method calls, shouldn't be too hard.
+    // a shitload of method calls, shouldn't be too hard/
