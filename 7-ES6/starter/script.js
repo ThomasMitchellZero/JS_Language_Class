@@ -602,11 +602,25 @@ const allStreets = new Map();
 
 const getParkTreeDensities = function(){
     allParks.forEach(function(value, key){
+
         // round the tree density so output isn't messy.
         let roundTD = Math.round(allParks.get(key).treeDensity());
+
         console.log(`${allParks.get(key).name} has ${roundTD} trees per square kilometer.`);
     })
 }
+
+// 2. Get average park age.
+
+const getParkAvgAge = function(){
+    
+    let totalAge = 0;
+    allParks.forEach(function(value, key){
+        
+        totalAge +=(allParks.get(key).age);
+    });
+    return totalAge/allParks.size;
+};
 
 // calculate total street length
 const getStreetTotalLength = function(){
@@ -724,7 +738,7 @@ console.log(getParkAvgArea());
 console.log(getPark1000trees());
 
 getParkTreeDensities();
-
+console.log(getParkAvgAge());
 // Executing the Code
     // a shitload of method calls, shouldn't be too hard/
 
