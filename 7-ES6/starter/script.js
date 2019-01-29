@@ -601,12 +601,17 @@ const allStreets = new Map();
 // 1. Get tree density for each park
 
 const getParkTreeDensities = function(){
-    // Stopping here 1/27.
+    allParks.forEach(function(value, key){
+        // round the tree density so output isn't messy.
+        let roundTD = Math.round(allParks.get(key).treeDensity());
+        console.log(`${allParks.get(key).name} has ${roundTD} trees per square kilometer.`);
+    })
 }
 
 // calculate total street length
 const getStreetTotalLength = function(){
     var sumStreetLength = 0;
+    // Deleting the value parameter blows the whole thing up.  Why?
     allStreets.forEach(function(value, key){
         sumStreetLength += allStreets.get(key).streetLength;
     })
@@ -671,7 +676,7 @@ class Park extends CityObject{
         var d = -1;
         
         if(this.numberTrees > 0 && this.area > 0){
-            d = (this.area/this.numberTrees); 
+            d = (this.numberTrees/this.area); 
         }
 
         return d;
@@ -699,10 +704,10 @@ class Street extends CityObject{
 
 
 // creating the streets
-new Park('Wicker Park', 1899, 55, 44);
-new Park('Bhinna Park', 1983, 56, 3);
+new Park('Wicker Park', 1899, 44, 2);
+new Park('Bhinna Park', 1983, 777, 3);
 new Park('Piedmont Part', 1985, 2111, 4);
-new Park('Yellowstone National Park', 1882, 5000, 4400);
+new Park('Yellowstone National Park', 1882, 55000, 4400);
 
 //creating the parks
 new Street('Englewood', 1967, 22, "small");
@@ -717,6 +722,8 @@ console.log(getStreetTotalLength());
 console.log(getStreetAvgLength());
 console.log(getParkAvgArea());
 console.log(getPark1000trees());
+
+getParkTreeDensities();
 
 // Executing the Code
     // a shitload of method calls, shouldn't be too hard/
