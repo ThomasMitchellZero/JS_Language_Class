@@ -614,11 +614,13 @@ const getParkTreeDensities = function(){
 
 const getParkAvgAge = function(){
     let totalAge = 0;
+    let avgAge = 0
     allParks.forEach(function(value, key){
         
         totalAge +=(allParks.get(key).age);
     });
-    return totalAge/allParks.size;
+    avgAge =  Math.round(totalAge/allParks.size);
+    console.log(`The town's parks have an average age of ${avgAge} years.`);
 };
 
 // calculate total street length
@@ -745,6 +747,13 @@ const lineDivider = " --------------------------------------------------"
 // Question 1:
 console.log(`1.${lineDivider}`);
 getParkTreeDensities();
+
+// Question 2:
+console.log(`2.${lineDivider}`);
+getParkAvgAge();
+
+// Question 3:
+console.log(`3.${lineDivider}`);
 
 
 
