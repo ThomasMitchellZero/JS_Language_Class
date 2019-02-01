@@ -613,7 +613,6 @@ const getParkTreeDensities = function(){
 // 2. Get average park age.
 
 const getParkAvgAge = function(){
-    
     let totalAge = 0;
     allParks.forEach(function(value, key){
         
@@ -688,7 +687,7 @@ class Park extends CityObject{
     treeDensity(){
 
         var d = -1;
-        
+        // making sure that both park area and number of trees are positive before computing.  Otherwise, return -1.
         if(this.numberTrees > 0 && this.area > 0){
             d = (this.numberTrees/this.area); 
         }
@@ -700,16 +699,25 @@ class Park extends CityObject{
 
 
 
-
 // A Street subclass, also extending CityObjects
 
 class Street extends CityObject{
-
-    constructor(name, yearBuilt, streetLength, sizeClass = 'Normal'){
+    
+    constructor(name, yearBuilt, streetLength, sizeClass = 'normal'){
+        
+        const streetTypes = ["tiny", 'small', 'normal', 'big', 'huge'];
+        
         super(name, yearBuilt);
-
         this.streetLength = streetLength;
-        this.sizeClass = sizeClass;
+
+        // We only want to set the sizeClass if it is one of the five options in streetTypes.  Othewise, the default 'normal' will be used.
+        if(streetTypes.includes(sizeClass)){
+            this.sizeClass = sizeClass;
+        } else {
+            this.sizeClass = "normal";
+        };
+
+        
 
         // Adds this to the allStreets map 
         allStreets.set((this.name), this);
@@ -724,12 +732,20 @@ new Park('Piedmont Part', 1985, 2111, 4);
 new Park('Yellowstone National Park', 1882, 55000, 4400);
 
 //creating the parks
-new Street('Englewood', 1967, 22, "small");
+new Street('Englewood', 1967, 22, "fart");
 new Street('Halsted', 1900, 44, "big");
 new Street("Wolcott", 1902, 14, "huge");
 
 console.log(allParks);
 console.log(allStreets);
+
+// Printout of the actual report.
+const lineDivider = " --------------------------------------------------"
+
+// Question 1:
+console.log(`1.${lineDivider}`);
+getParkTreeDensities();
+
 
 
 console.log(getStreetTotalLength());
