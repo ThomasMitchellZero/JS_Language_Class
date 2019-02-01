@@ -631,12 +631,14 @@ const getStreetTotalLength = function(){
         sumStreetLength += allStreets.get(key).streetLength;
     })
     return sumStreetLength;
+    
 }
 
 // calculate average street length
 const getStreetAvgLength = function(){
-    return(getStreetTotalLength() / allStreets.size);
-
+    let StreetAvgLength = Math.round(getStreetTotalLength() / allStreets.size);
+    
+    console.log(`The city's streets are an average of ${StreetAvgLength} km long.`)
 }
 
 // a method to calculate average age
@@ -649,16 +651,21 @@ const getParkAvgArea = function(){
     return (totalArea / allParks.size);
 }
 
-    // Checks which parks have more than 1k trees.
+// Checks which parks have more than 1k trees.
 const getPark1000trees = function(){
-    let WoodedParkArray = [];
+    let WoodedParkString = "";
+    console.log(`The following parks have more than 1000 trees:`)
     allParks.forEach(function(value, key){
         if ((allParks.get(key).numberTrees)  > 1000){
-            WoodedParkArray.push(key);
+            console.log(key);
         };
     });
-    return WoodedParkArray;
+    
 }
+
+// Prints out all the street classifications
+
+const getStreetTypes // stopping here for the day.
 
 
 // A CityObject class - 
@@ -730,7 +737,7 @@ class Street extends CityObject{
 // creating the streets
 new Park('Wicker Park', 1899, 44, 2);
 new Park('Bhinna Park', 1983, 777, 3);
-new Park('Piedmont Part', 1985, 2111, 4);
+new Park('Piedmont Park', 1985, 2111, 4);
 new Park('Yellowstone National Park', 1882, 55000, 4400);
 
 //creating the parks
@@ -754,16 +761,15 @@ getParkAvgAge();
 
 // Question 3:
 console.log(`3.${lineDivider}`);
-
-
-
-console.log(getStreetTotalLength());
-console.log(getStreetAvgLength());
-console.log(getParkAvgArea());
 console.log(getPark1000trees());
 
-getParkTreeDensities();
-console.log(getParkAvgAge());
-// Executing the Code
-    // a shitload of method calls, shouldn't be too hard/
+// Question 4:
+console.log(`4.${lineDivider}`);
+console.log(`The town's streets are a total of ${getStreetTotalLength()} km long`);
+
+console.log(getStreetAvgLength());
+
+// Question 5:
+console.log(`5.${lineDivider}`);
+
 
