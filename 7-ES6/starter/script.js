@@ -623,7 +623,20 @@ const getParkAvgAge = function(){
     console.log(`The town's parks have an average age of ${avgAge} years.`);
 };
 
-// calculate total street length
+// 3.  Find which parks have more than 1k trees
+
+const getParkTreeMinimum = function(min){
+    let WoodedParkString = "";
+    console.log(`The following parks have more than ${min} trees:`)
+    allParks.forEach(function(value, key){
+        if ((allParks.get(key).numberTrees)  > min){
+            console.log(key);
+        };
+    });
+    
+}
+
+// 4.  calculate total street length
 const getStreetTotalLength = function(){
     var sumStreetLength = 0;
     // Deleting the value parameter blows the whole thing up.  Why?
@@ -634,36 +647,15 @@ const getStreetTotalLength = function(){
     
 }
 
-// calculate average street length
+// 4.  calculate average street length
 const getStreetAvgLength = function(){
     let StreetAvgLength = Math.round(getStreetTotalLength() / allStreets.size);
     
     console.log(`The city's streets are an average of ${StreetAvgLength} km long.`)
 }
 
-// a method to calculate average age
-const getParkAvgArea = function(){
-    let totalArea = 0;
-    
-    allParks.forEach(function(value, key){
-        totalArea += allParks.get(key).area;
-    });
-    return (totalArea / allParks.size);
-}
 
-// Checks which parks have more than 1k trees.
-const getPark1000trees = function(){
-    let WoodedParkString = "";
-    console.log(`The following parks have more than 1000 trees:`)
-    allParks.forEach(function(value, key){
-        if ((allParks.get(key).numberTrees)  > 1000){
-            console.log(key);
-        };
-    });
-    
-}
-
-// Prints out all the street classifications
+// 5. Prints out all the street classifications
 
 const getStreetTypes  = function(){
     allStreets.forEach(function(value, key){
@@ -671,8 +663,10 @@ const getStreetTypes  = function(){
     });
 };
 
+///// Function Constructors ////////////////////
 
-// A CityObject class - 
+
+// A CityObject class - Parent class to Street and Park
 class CityObject{
     constructor(name, yearBuilt){
         this.name = name;
@@ -681,7 +675,6 @@ class CityObject{
         this.age = (new Date().getFullYear()) - yearBuilt;
     };
 };
-
 
 
 // A Parks class, extending CityObjects
@@ -765,7 +758,7 @@ getParkAvgAge();
 
 // Question 3:
 console.log(`3.${lineDivider}`);
-getPark1000trees();
+getParkTreeMinimum(1001);
 
 // Question 4:
 console.log(`4.${lineDivider}`);
