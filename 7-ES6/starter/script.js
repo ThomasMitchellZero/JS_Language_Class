@@ -591,7 +591,7 @@ johnAthlete6.calculateAge();
 
 //// 7.117 - Coding Challenge 8 //////////////////////////////
 
-// * A map containing all Parks.  Map because we will want to iterate through these.
+// * Two maps, one containing all Parks and one containing all Streets.  Map because we will want to iterate through these.
 
 const allParks = new Map();
 const allStreets = new Map();
@@ -663,10 +663,12 @@ const getStreetTypes  = function(){
     });
 };
 
+
 ///// Function Constructors ////////////////////
 
 
-// A CityObject class - Parent class to Street and Park
+// A CityObject class - Parent class to Street and Park.  Contains all properties that Parks && Streets will have.
+
 class CityObject{
     constructor(name, yearBuilt){
         this.name = name;
