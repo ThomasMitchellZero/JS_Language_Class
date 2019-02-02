@@ -665,7 +665,11 @@ const getPark1000trees = function(){
 
 // Prints out all the street classifications
 
-const getStreetTypes // stopping here for the day.
+const getStreetTypes  = function(){
+    allStreets.forEach(function(value, key){
+        console.log(`${key}, built in ${allStreets.get(key).yearBuilt}, is a ${allStreets.get(key).sizeClass} street`);
+    });
+};
 
 
 // A CityObject class - 
@@ -675,7 +679,7 @@ class CityObject{
         this.yearBuilt = yearBuilt;
         // automatically calculate how old it is.
         this.age = (new Date().getFullYear()) - yearBuilt;
-    }
+    };
 };
 
 
@@ -761,15 +765,15 @@ getParkAvgAge();
 
 // Question 3:
 console.log(`3.${lineDivider}`);
-console.log(getPark1000trees());
+getPark1000trees();
 
 // Question 4:
 console.log(`4.${lineDivider}`);
 console.log(`The town's streets are a total of ${getStreetTotalLength()} km long`);
 
-console.log(getStreetAvgLength());
+getStreetAvgLength();
 
 // Question 5:
 console.log(`5.${lineDivider}`);
-
+getStreetTypes();
 
