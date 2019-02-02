@@ -689,7 +689,7 @@ class Park extends CityObject{
         // Adds this to the allParks map
         allParks.set((this.name), this)
     }
-
+    // I'm sure it's better to calculate tree density and assign it as a property upon creation, but I want an example of a method in the class constructor.
     treeDensity(){
 
         var d = -1;
@@ -722,8 +722,6 @@ class Street extends CityObject{
         } else {
             this.sizeClass = "normal";
         };
-
-        
 
         // Adds this to the allStreets map 
         allStreets.set((this.name), this);
