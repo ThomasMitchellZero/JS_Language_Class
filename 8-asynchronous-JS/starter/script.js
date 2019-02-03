@@ -42,26 +42,30 @@ const getIDs = new Promise( (resolve, reject)=> {
 });
 
 
-// I get returning a promise.  What I don't get how all the different arguments end up where they do.  Need to untangle tomorrow.
-const getRecipe = recID =>{
-    return new Promise((resolve, reject) => {
-        setTimeout((ID) => {
+
+// getRecipe is a function, and it accepts a parameter (recID).  When it runs, it will creat a an unnamed Promise.  Is this how you pass additional arguments into a Promise?
+const getRecipe = function(recID){
+
+    // this is the promise that comes back.  First argument is the callback to be run.
+    return new Promise(function(resolve, reject){
+        
+        //the argument passed to recID will in turn be passed here, to ID.   
+        setTimeout(function(ID){
             const recipe = {
                 title: "fresh tomato pasta",
                 publisher: "Jonas",}
+            // here's where we FINALLY use the argument that was passed to the function, to setTimeout, and then finally to this template string as ID.
             resolve(`${ID}: ${recipe.title}`);
 
-        // remember, for Timeout, any arguments after the first two (the callback and the time to wait) will be passed into the callback in the order they are recieved.  In this case, it's recID.  So whatever argument is passed into RecID when it is called will in turn be passed as an argument into setTimeout.  
-
-        // Also remember that knowing the ins and outs of setTimeout is not critical.  We're just using that to simulate the demands of an external API call.
-
+        // recID is the outside parameter we want to pass into the promise.  Remember, for setTimeout the first two parameters are the callback and the wait time.  Additional arguments are passed INTO the callback function.
         }, 1500, recID);
 
 
     });
 };
 
-// the argument being passed to the callback, i.e. IDs, is what will be returned if the promise is resolved.  In this case, it's the array of numbers.
+
+// First, we are going to consume the getIDs promise.  Get IDs waits 15 seconds, then returns the array.  
 
 getIDs.then(IDs => {
     console.log(IDs);

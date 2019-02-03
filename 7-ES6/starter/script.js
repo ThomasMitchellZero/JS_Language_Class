@@ -655,6 +655,7 @@ const getStreetAvgLength = function(){
 }
 
 
+
 // 5. Prints out all the street classifications
 
 const getStreetTypes  = function(){
