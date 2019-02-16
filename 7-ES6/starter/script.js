@@ -614,7 +614,7 @@ const getParkTreeDensities = function(){
 
 const getParkAvgAge = function(){
     let totalAge = 0;
-    let avgAge = 0
+    let avgAge = 0;
     allParks.forEach(function(value, key){
         
         totalAge +=(allParks.get(key).age);
@@ -714,7 +714,7 @@ class Street extends CityObject{
     
     constructor(name, yearBuilt, streetLength, sizeClass = 'normal'){
         
-        const streetTypes = ["tiny", 'small', 'normal', 'big', 'huge'];
+        const streetTypes = ['tiny', 'small', 'normal', 'big', 'huge'];
         
         super(name, yearBuilt);
         this.streetLength = streetLength;
